@@ -229,24 +229,30 @@
             color: white;
         }
         
-        .audio-test-btn {
+        .speak-btn {
             background: linear-gradient(90deg, #9b59b6, #8e44ad);
             color: white;
         }
         
-        .tts-btn {
+        .sound-btn {
             background: linear-gradient(90deg, #3498db, #2980b9);
             color: white;
         }
         
-        .fallback-btn {
+        .stop-btn {
             background: linear-gradient(90deg, #e74c3c, #c0392b);
             color: white;
         }
         
-        .beep-btn {
-            background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
+        .tab-btn {
+            padding: 12px 20px;
+            background-color: #e8f4fc;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #2980b9;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
         button:active {
@@ -351,6 +357,87 @@
             font-weight: 600;
         }
         
+        .notification {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            padding: 12px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transform: translateY(-150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+        
+        .notification.warning {
+            background-color: #f39c12;
+        }
+        
+        .speaking {
+            position: relative;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+            animation: speakingPulse 1.5s infinite;
+        }
+        
+        @keyframes speakingPulse {
+            0% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(52, 152, 219, 0.1); }
+            100% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); }
+        }
+        
+        .speaking::after {
+            content: "🔊";
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            animation: bounce 1s infinite;
+            font-size: 1.2rem;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        
+        /* Tab container */
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .tab-btn.active {
+            background-color: #2980b9;
+            color: white;
+            box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Settings */
         .settings {
             margin-top: 20px;
             padding: 18px 15px;
@@ -382,17 +469,6 @@
             width: 100%;
         }
         
-        .speed-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            width: 100%;
-        }
-        
-        .speed-control {
-            width: 100%;
-        }
-        
         label {
             font-weight: 600;
             color: #555;
@@ -420,19 +496,7 @@
             outline: none;
         }
         
-        input[type="range"] {
-            width: 100%;
-            height: 36px;
-            padding: 0;
-        }
-        
-        .range-value {
-            text-align: center;
-            font-weight: 600;
-            color: #2980b9;
-            font-size: 0.9rem;
-        }
-        
+        /* Add vocab form */
         .add-vocab-form {
             margin-top: 20px;
             padding: 20px 15px;
@@ -479,11 +543,14 @@
             width: 100%;
         }
         
-        .vocabulary-list {
-            margin-top: 20px;
+        /* Vocabulary list */
+        .vocabulary-list-full {
+            margin-top: 10px;
             padding: 15px;
             background-color: #f8f9fa;
             border-radius: 12px;
+            max-height: 500px;
+            overflow-y: auto;
         }
         
         .vocabulary-list-header {
@@ -608,26 +675,14 @@
             color: #c62828;
         }
         
-        .delete-btn:active {
-            background-color: #ffcdd2;
-        }
-        
         .play-btn {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
         
-        .play-btn:active {
-            background-color: #c8e6c9;
-        }
-        
-        .speak-btn {
+        .speak-item-btn {
             background-color: #e3f2fd;
             color: #1565c0;
-        }
-        
-        .speak-btn:active {
-            background-color: #bbdefb;
         }
         
         footer {
@@ -639,343 +694,31 @@
             opacity: 0.9;
         }
         
-        .pulse {
-            animation: pulse 0.6s ease-in-out;
+        /* Range input */
+        input[type="range"] {
+            width: 100%;
+            height: 36px;
+            padding: 0;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        
-        .speaking {
-            position: relative;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-            animation: speakingPulse 1.5s infinite;
-        }
-        
-        @keyframes speakingPulse {
-            0% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); }
-            50% { box-shadow: 0 0 0 8px rgba(52, 152, 219, 0.1); }
-            100% { box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3); }
-        }
-        
-        .speaking::after {
-            content: "🔊";
-            position: absolute;
-            right: 15px;
-            top: 15px;
-            animation: bounce 1s infinite;
-            font-size: 1.2rem;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-        
-        .auto-mode {
-            display: inline-block;
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 4px 10px;
-            border-radius: 16px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            padding: 12px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transform: translateY(-150%);
-            transition: transform 0.3s ease;
-        }
-        
-        .notification.show {
-            transform: translateY(0);
-        }
-        
-        .notification.error {
-            background-color: #f44336;
-        }
-        
-        .notification.warning {
-            background-color: #f39c12;
-        }
-        
-        /* Tab container */
-        .tab-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .tab-btn {
-            padding: 12px 20px;
-            background-color: #e8f4fc;
-            border: none;
-            border-radius: 8px;
+        .range-value {
+            text-align: center;
             font-weight: 600;
             color: #2980b9;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         
-        .tab-btn.active {
-            background-color: #2980b9;
-            color: white;
-            box-shadow: 0 4px 8px rgba(41, 128, 185, 0.3);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Danh sách từ vựng fullscreen */
-        .vocabulary-list-full {
-            margin-top: 10px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            max-height: 500px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        .vocabulary-list-full .vocabulary-item {
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        
+        /* Back button */
         .back-btn {
             background: linear-gradient(90deg, #7f8c8d, #95a5a6);
             color: white;
             margin-bottom: 15px;
         }
         
-        /* Loading overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .loader {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Voice selection */
-        .voice-selection {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #e8f4fd;
-            border-radius: 12px;
-            border: 1px solid #3498db;
-        }
-        
-        /* TTS options */
-        .tts-options {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #d5f4e6;
-            border-radius: 12px;
-            border: 1px solid #2ecc71;
-        }
-        
-        /* Audio visualizer */
-        .audio-visualizer {
-            width: 100%;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            margin: 10px 0;
-        }
-        
-        .bar {
-            width: 4px;
-            background: #3498db;
-            border-radius: 2px;
-            animation: audioBar 0.5s ease infinite alternate;
-        }
-        
-        @keyframes audioBar {
-            0% { height: 5px; }
-            100% { height: 25px; }
-        }
-        
-        /* TTS indicator */
-        .tts-indicator {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            margin-left: 10px;
-            animation: ttsFlash 1s infinite;
-        }
-        
-        @keyframes ttsFlash {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        /* TTS controls */
-        .tts-controls {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        /* Speaking status */
-        .speaking-status {
-            padding: 10px;
-            background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Volume control */
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .volume-slider {
-            flex: 1;
-        }
-        
-        /* Tablet và màn hình lớn hơn */
         @media (min-width: 768px) {
-            body {
-                padding: 20px;
-            }
-            
-            .container {
-                border-radius: 20px;
-                margin-top: 20px;
-            }
-            
-            header {
-                padding: 25px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .app-description {
-                padding: 20px;
-                font-size: 1rem;
-            }
-            
-            .learning-area {
-                padding: 30px;
-                gap: 25px;
-            }
-            
             .vocabulary-container {
                 grid-template-columns: 1fr 1fr;
                 display: grid;
-                gap: 20px;
-            }
-            
-            .vocabulary-box {
-                padding: 25px;
-            }
-            
-            .word-text {
-                font-size: 2.2rem;
-            }
-            
-            .controls {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .controls-row {
-                flex-direction: row;
-                justify-content: center;
-            }
-            
-            .controls-row button {
-                min-width: 160px;
-            }
-            
-            .step-indicator {
-                flex-direction: row;
-                justify-content: center;
-                gap: 15px;
-            }
-            
-            .step {
-                width: 120px;
-            }
-            
-            .speed-controls {
-                flex-direction: row;
                 gap: 20px;
             }
             
@@ -985,138 +728,25 @@
                 gap: 15px;
             }
             
-            .form-actions {
-                flex-direction: row;
-                justify-content: center;
-                gap: 15px;
-            }
-            
-            .form-actions button {
-                width: auto;
-                min-width: 160px;
-            }
-            
-            .vocabulary-list-header {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            
             .vocabulary-item {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
             }
-            
-            .vocabulary-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-start;
-                gap: 0;
-            }
-            
-            .vocabulary-actions {
-                margin-left: 20px;
-                flex: 0 0 auto;
-            }
-            
-            .action-btn {
-                flex: none;
-            }
-            
-            .tab-container {
-                justify-content: flex-start;
-            }
-            
-            .vocabulary-list-full {
-                max-height: 600px;
-            }
-        }
-        
-        /* Cải thiện cho iPhone và các thiết bị nhỏ */
-        @media (max-width: 360px) {
-            h1 {
-                font-size: 1.3rem;
-            }
-            
-            .subtitle {
-                font-size: 0.8rem;
-            }
-            
-            .word-text {
-                font-size: 1.5rem;
-            }
-            
-            .meaning-text {
-                font-size: 1.2rem;
-            }
-            
-            button {
-                padding: 12px 10px;
-                font-size: 0.9rem;
-            }
-            
-            .vocabulary-list-full {
-                max-height: 400px;
-            }
-        }
-        
-        /* CSS để chống zoom nhưng vẫn cho phép cuộn */
-        html {
-            touch-action: manipulation;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Loading overlay -->
-    <div id="loadingOverlay" class="loading-overlay">
-        <div class="loader"></div>
-        <p>Đang khởi tạo ứng dụng với âm thanh...</p>
-        <p id="loadingStatus">Đang khởi tạo Text-to-Speech</p>
-        <div id="audioVisualizer" class="audio-visualizer" style="display: none;">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-        <button id="enableTTSBtn" class="tts-btn" style="display: none; margin-top: 20px;">
-            <i class="fas fa-volume-up"></i> Kích hoạt TTS
-        </button>
-        <button id="useBeepModeBtn" class="beep-btn" style="display: none; margin-top: 10px;">
-            <i class="fas fa-bell"></i> Sử dụng âm thanh beep
-        </button>
-        <button id="useFallbackBtn" class="fallback-btn" style="display: none; margin-top: 10px;">
-            <i class="fas fa-eye"></i> Chỉ sử dụng hình ảnh
-        </button>
-    </div>
-
-    <!-- Speaking Status -->
-    <div id="speakingStatus" class="speaking-status" style="display: none; position: fixed; top: 70px; left: 15px; right: 15px; z-index: 999;">
-        <i class="fas fa-volume-up"></i>
-        <span id="speakingText">Đang đọc từ vựng...</span>
-        <div class="tts-indicator"></div>
-    </div>
-
-    <!-- Thông báo -->
-    <div id="notification" class="notification">
-        <i class="fas fa-check-circle"></i>
-        <span id="notificationText">Thông báo</span>
-    </div>
-
     <div class="container">
         <header>
-            <h1><i class="fas fa-book-open"></i> Học Từ Vựng Tiếng Anh với Âm Thanh</h1>
-            <p class="subtitle">Tự động đọc từ vựng → Hiển thị nghĩa tiếng Việt → Lặp lại → Chuyển từ tiếp theo</p>
+            <h1><i class="fas fa-book-open"></i> Học Từ Vựng Tiếng Anh Tự Động</h1>
+            <p class="subtitle">Tự động đọc từ vựng → Hiển thị nghĩa → Lặp lại → Chuyển từ tiếp theo</p>
         </header>
         
         <div class="app-description">
-            <p><span class="highlight">CHẾ ĐỘ TỰ ĐỘNG CÓ ÂM THANH:</span> Ứng dụng sẽ tự động <span class="highlight">đọc từ vựng tiếng Anh</span>, sau đó <span class="highlight">hiển thị nghĩa tiếng Việt</span>, lặp lại rồi chuyển sang từ tiếp theo.</p>
-            <p>Học từ vựng với phát âm chuẩn, phiên âm, loại từ và ví dụ thực tế!</p>
+            <p><span class="highlight">HOẠT ĐỘNG OFFLINE:</span> Phát âm từ vựng bằng Web Audio API, không cần internet!</p>
+            <p>Thêm từ mới, tùy chỉnh cài đặt, và học với âm thanh mô phỏng phát âm.</p>
         </div>
         
         <div class="learning-area">
@@ -1126,7 +756,7 @@
                     <i class="fas fa-graduation-cap"></i> Học Từ Vựng
                 </button>
                 <button class="tab-btn" data-tab="list-tab">
-                    <i class="fas fa-list"></i> Danh Sách Từ Vựng
+                    <i class="fas fa-list"></i> Danh Sách Từ
                 </button>
                 <button class="tab-btn" data-tab="settings-tab">
                     <i class="fas fa-cog"></i> Cài đặt
@@ -1135,17 +765,6 @@
             
             <!-- Tab Học Từ Vựng -->
             <div id="learning-tab" class="tab-content active">
-                <div id="ttsModeIndicator" class="notification warning" style="position: relative; transform: translateY(0); margin-bottom: 15px; display: none;">
-                    <i class="fas fa-volume-up"></i>
-                    <span>Đang sử dụng chế độ đọc từ vựng (TTS)</span>
-                    <div class="tts-indicator"></div>
-                </div>
-                
-                <div id="visualModeIndicator" class="notification" style="position: relative; transform: translateY(0); margin-bottom: 15px; display: none; background-color: #3498db;">
-                    <i class="fas fa-eye"></i>
-                    <span>Đang sử dụng chế độ học với hiệu ứng hình ảnh</span>
-                </div>
-                
                 <div class="vocabulary-container">
                     <div class="vocabulary-box english-word" id="englishBox">
                         <div class="box-header">
@@ -1179,8 +798,8 @@
                 </div>
                 
                 <div class="step-indicator">
-                    <div class="step" id="step1">1. Đọc từ tiếng Anh</div>
-                    <div class="step" id="step2">2. Hiển thị nghĩa tiếng Việt</div>
+                    <div class="step" id="step1">1. Nghe phát âm</div>
+                    <div class="step" id="step2">2. Xem nghĩa tiếng Việt</div>
                     <div class="step" id="step3">3. Lặp lại</div>
                 </div>
                 
@@ -1202,15 +821,15 @@
                         </button>
                     </div>
                     <div class="controls-row">
-                        <button id="speakWordBtn" class="tts-btn">
-                            <i class="fas fa-volume-up"></i> Đọc từ này
+                        <button id="speakWordBtn" class="speak-btn">
+                            <i class="fas fa-volume-up"></i> Nghe từ này
                         </button>
-                        <button id="speakExampleBtn" class="audio-test-btn">
-                            <i class="fas fa-microphone"></i> Đọc ví dụ
+                        <button id="spellWordBtn" class="sound-btn">
+                            <i class="fas fa-spell-check"></i> Đánh vần
                         </button>
                     </div>
-                    <button id="addVocabBtn" class="add-btn">
-                        <i class="fas fa-plus-circle"></i> Thêm từ mới
+                    <button id="testSoundBtn" class="sound-btn">
+                        <i class="fas fa-music"></i> Kiểm tra âm thanh
                     </button>
                 </div>
                 
@@ -1223,7 +842,7 @@
                         <div id="progressFill" class="progress-fill"></div>
                     </div>
                     <div class="progress-text">
-                        <span>Từ: <span id="currentVocabNum">1</span>/<span id="totalVocabs">20</span></span>
+                        <span>Từ: <span id="currentVocabNum">1</span>/<span id="totalVocabs">10</span></span>
                         <span>Tiến độ: <span id="progressPercent">0</span>%</span>
                     </div>
                 </div>
@@ -1231,16 +850,12 @@
             
             <!-- Tab Danh Sách Từ Vựng -->
             <div id="list-tab" class="tab-content">
-                <button id="backToLearningBtn" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Quay lại học từ vựng
-                </button>
-                
                 <div class="vocabulary-list-full">
                     <div class="vocabulary-list-header">
-                        <h3><i class="fas fa-list-ol"></i> Danh sách từ vựng (<span id="vocabCountFull">20</span> từ)</h3>
+                        <h3><i class="fas fa-list-ol"></i> Danh sách từ vựng (<span id="vocabCountFull">10</span> từ)</h3>
                         <div class="list-controls">
                             <button id="playAllBtn" class="play-btn action-btn">
-                                <i class="fas fa-play"></i> Xem tất cả
+                                <i class="fas fa-play"></i> Học tất cả
                             </button>
                             <button id="clearAllBtn" class="delete-btn action-btn">
                                 <i class="fas fa-trash"></i> Xóa tất cả
@@ -1255,15 +870,11 @@
             
             <!-- Tab Cài đặt -->
             <div id="settings-tab" class="tab-content">
-                <button id="backToLearningBtn2" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Quay lại học từ vựng
-                </button>
-                
                 <div class="settings">
                     <h3><i class="fas fa-cog"></i> Cài đặt học tập</h3>
-                    <div class="speed-controls">
-                        <div class="speed-control">
-                            <label for="englishSpeed">Thời gian đọc tiếng Anh (giây):</label>
+                    <div class="settings-group">
+                        <div class="setting-item">
+                            <label for="englishSpeed">Thời gian đọc từ (giây):</label>
                             <select id="englishSpeed">
                                 <option value="2">2 giây</option>
                                 <option value="3" selected>3 giây</option>
@@ -1272,8 +883,8 @@
                             </select>
                         </div>
                         
-                        <div class="speed-control">
-                            <label for="vietnameseSpeed">Thời gian hiển thị tiếng Việt (giây):</label>
+                        <div class="setting-item">
+                            <label for="vietnameseSpeed">Thời gian hiển thị nghĩa (giây):</label>
                             <select id="vietnameseSpeed">
                                 <option value="2">2 giây</option>
                                 <option value="3" selected>3 giây</option>
@@ -1281,11 +892,9 @@
                                 <option value="5">5 giây</option>
                             </select>
                         </div>
-                    </div>
-                    
-                    <div class="settings-group">
+                        
                         <div class="setting-item">
-                            <label for="repeatCount">Số lần lặp lại mỗi từ:</label>
+                            <label for="repeatCount">Số lần lặp lại:</label>
                             <select id="repeatCount">
                                 <option value="2">2 lần</option>
                                 <option value="3" selected>3 lần</option>
@@ -1295,56 +904,19 @@
                         </div>
                         
                         <div class="setting-item">
-                            <label for="delayTime">Thời gian chờ (giây): <span id="delayValue" class="range-value">1.5</span></label>
-                            <input type="range" id="delayTime" min="0.5" max="3" step="0.1" value="1.5">
+                            <label for="volumeSlider">Âm lượng: <span id="volumeValue" class="range-value">70%</span></label>
+                            <input type="range" id="volumeSlider" min="0" max="100" value="70">
                         </div>
-                    </div>
-                    
-                    <div class="tts-options">
-                        <h4><i class="fas fa-volume-up"></i> Cài đặt âm thanh đọc từ</h4>
+                        
                         <div class="setting-item">
-                            <label for="audioMode">Chế độ học:</label>
-                            <select id="audioMode">
-                                <option value="tts" selected>Đọc từ vựng (TTS)</option>
-                                <option value="both">TTS + Hình ảnh</option>
-                                <option value="visual">Chỉ hình ảnh</option>
-                                <option value="beep">Âm thanh beep</option>
-                            </select>
+                            <label for="pitchSlider">Độ cao giọng: <span id="pitchValue" class="range-value">Trung bình</span></label>
+                            <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="1">
                         </div>
-                        
-                        <div class="volume-control">
-                            <label for="volumeSlider"><i class="fas fa-volume-up"></i> Âm lượng:</label>
-                            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.1" value="1">
-                            <span id="volumeValue" class="range-value">100%</span>
-                        </div>
-                        
-                        <div class="tts-controls">
-                            <button id="testTTSBtn" class="tts-btn action-btn">
-                                <i class="fas fa-play"></i> Kiểm tra TTS
-                            </button>
-                            <button id="toggleAutoSpeakBtn" class="start-btn action-btn">
-                                <i class="fas fa-toggle-on"></i> Bật đọc tự động
-                            </button>
-                        </div>
-                        
-                        <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                            <i class="fas fa-info-circle"></i> TTS (Text-to-Speech) sử dụng Google API để đọc từ vựng. Hoạt động tốt trên APK Android.
-                        </p>
-                    </div>
-                    
-                    <div class="setting-item">
-                        <label for="visualEffect">Hiệu ứng hình ảnh:</label>
-                        <select id="visualEffect">
-                            <option value="pulse" selected>Pulse (rung)</option>
-                            <option value="highlight">Highlight</option>
-                            <option value="flash">Flash (nhấp nháy)</option>
-                            <option value="slide">Trượt</option>
-                        </select>
                     </div>
                 </div>
                 
                 <!-- Phần thêm từ mới -->
-                <div class="add-vocab-form" id="addVocabForm" style="display: none; margin-top: 20px;">
+                <div class="add-vocab-form">
                     <div class="form-title">
                         <i class="fas fa-plus-circle"></i> Thêm từ vựng mới
                     </div>
@@ -1367,9 +939,6 @@
                                 <option value="Tính từ">Tính từ</option>
                                 <option value="Trạng từ">Trạng từ</option>
                                 <option value="Giới từ">Giới từ</option>
-                                <option value="Liên từ">Liên từ</option>
-                                <option value="Đại từ">Đại từ</option>
-                                <option value="Thán từ">Thán từ</option>
                             </select>
                         </div>
                         
@@ -1379,21 +948,21 @@
                         </div>
                         
                         <div class="form-input full-width">
-                            <label for="newExampleSentence">Ví dụ (tiếng Anh):</label>
+                            <label for="newExampleSentence">Ví dụ:</label>
                             <textarea id="newExampleSentence" placeholder="Nhập câu ví dụ..."></textarea>
                         </div>
                         
                         <div class="form-input full-width">
-                            <label for="newAdditionalInfo">Thông tin bổ sung:</label>
-                            <textarea id="newAdditionalInfo" placeholder="Giải thích thêm, từ đồng nghĩa, v.v..."></textarea>
+                            <label for="newAdditionalInfo">Ghi chú thêm:</label>
+                            <textarea id="newAdditionalInfo" placeholder="Giải thích thêm..."></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
                         <button id="saveVocabBtn" class="start-btn">
                             <i class="fas fa-save"></i> Lưu từ mới
                         </button>
-                        <button id="cancelAddBtn" class="pause-btn">
-                            <i class="fas fa-times"></i> Hủy
+                        <button id="testNewWordBtn" class="sound-btn">
+                            <i class="fas fa-volume-up"></i> Nghe thử
                         </button>
                     </div>
                 </div>
@@ -1401,8 +970,13 @@
         </div>
     </div>
     
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText">Thông báo</span>
+    </div>
+
     <footer>
-        <p>Ứng dụng Học Từ Vựng Tiếng Anh với Âm Thanh &copy; 2023 - Học từ vựng với phát âm chuẩn và ví dụ</p>
+        <p>Ứng dụng Học Từ Vựng Tiếng Anh &copy; 2023 - Hoạt động offline với Web Audio API</p>
     </footer>
 
     <script>
@@ -1414,25 +988,11 @@
         let timer = null;
         let currentStep = 0;
         let audioContext = null;
-        let useTTSMode = true;
-        let useBeepMode = false;
-        let useVisualMode = true;
-        let userInteracted = false;
-        let ttsAudio = null;
-        let ttsSupported = true;
-        let autoSpeakEnabled = true;
-        let volumeLevel = 1.0;
+        let isSpeaking = false;
+        let volume = 0.7;
+        let pitch = 1.0;
         
         // ========== DOM ELEMENTS ==========
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const loadingStatus = document.getElementById('loadingStatus');
-        const enableTTSBtn = document.getElementById('enableTTSBtn');
-        const useBeepModeBtn = document.getElementById('useBeepModeBtn');
-        const useFallbackBtn = document.getElementById('useFallbackBtn');
-        const speakingStatus = document.getElementById('speakingStatus');
-        const speakingText = document.getElementById('speakingText');
-        
-        // Các phần tử học tập
         const wordTextEl = document.getElementById('wordText');
         const phoneticTextEl = document.getElementById('phoneticText');
         const wordTypeEl = document.getElementById('wordType');
@@ -1440,359 +1000,282 @@
         const meaningTextEl = document.getElementById('meaningText');
         const additionalInfoEl = document.getElementById('additionalInfo');
         const englishBoxEl = document.getElementById('englishBox');
-        const vietnameseBoxEl = document.getElementById('vietnameseBox');
+        
+        // Controls
         const startBtn = document.getElementById('startBtn');
         const pauseBtn = document.getElementById('pauseBtn');
         const nextBtn = document.getElementById('nextBtn');
         const repeatBtn = document.getElementById('repeatBtn');
         const speakWordBtn = document.getElementById('speakWordBtn');
-        const speakExampleBtn = document.getElementById('speakExampleBtn');
-        const addVocabBtn = document.getElementById('addVocabBtn');
-        const testTTSBtn = document.getElementById('testTTSBtn');
-        const toggleAutoSpeakBtn = document.getElementById('toggleAutoSpeakBtn');
+        const spellWordBtn = document.getElementById('spellWordBtn');
+        const testSoundBtn = document.getElementById('testSoundBtn');
+        
+        // Settings
+        const englishSpeedSelect = document.getElementById('englishSpeed');
+        const vietnameseSpeedSelect = document.getElementById('vietnameseSpeed');
+        const repeatCountSelect = document.getElementById('repeatCount');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        const pitchSlider = document.getElementById('pitchSlider');
+        const pitchValue = document.getElementById('pitchValue');
+        
+        // Add vocab
+        const newEnglishWord = document.getElementById('newEnglishWord');
+        const newPhonetic = document.getElementById('newPhonetic');
+        const newWordType = document.getElementById('newWordType');
+        const newVietnameseMeaning = document.getElementById('newVietnameseMeaning');
+        const newExampleSentence = document.getElementById('newExampleSentence');
+        const newAdditionalInfo = document.getElementById('newAdditionalInfo');
+        const saveVocabBtn = document.getElementById('saveVocabBtn');
+        const testNewWordBtn = document.getElementById('testNewWordBtn');
+        
+        // List
+        const playAllBtn = document.getElementById('playAllBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        
+        // Status
         const statusText = document.getElementById('statusText');
         const repeatCounter = document.getElementById('repeatCounter');
         const progressFill = document.getElementById('progressFill');
         const currentVocabNum = document.getElementById('currentVocabNum');
         const totalVocabs = document.getElementById('totalVocabs');
         const progressPercent = document.getElementById('progressPercent');
-        
-        // Cài đặt
-        const audioModeSelect = document.getElementById('audioMode');
-        const visualEffectSelect = document.getElementById('visualEffect');
-        const repeatCountSelect = document.getElementById('repeatCount');
-        const englishSpeedSelect = document.getElementById('englishSpeed');
-        const vietnameseSpeedSelect = document.getElementById('vietnameseSpeed');
-        const delayTimeSlider = document.getElementById('delayTime');
-        const delayValue = document.getElementById('delayValue');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const volumeValue = document.getElementById('volumeValue');
-        
-        // ========== HÀM KHỞI TẠO ==========
-        function initApp() {
-            try {
-                // 1. Khởi tạo dữ liệu từ vựng
-                initVocabularyData();
-                
-                // 2. Khởi tạo TTS
-                initTTS();
-                
-                // 3. Khởi tạo Audio Context dự phòng
-                initAudioFallback();
-                
-                // 4. Cài đặt sự kiện
-                setupEventListeners();
-                
-                // 5. Tải dữ liệu đã lưu
-                loadFromLocalStorage();
-                
-                // 6. Cập nhật giao diện
-                updateVocabCount();
-                updateProgress();
-                updateVocabularyHistory();
-                displayCurrentVocabulary();
-                
-                // 7. Cập nhật giá trị thời gian chờ
-                delayValue.textContent = delayTimeSlider.value;
-                delayTimeSlider.addEventListener('input', function() {
-                    delayValue.textContent = this.value;
-                });
-                
-                // 8. Cập nhật giá trị âm lượng
-                volumeValue.textContent = Math.round(volumeSlider.value * 100) + '%';
-                volumeSlider.addEventListener('input', function() {
-                    volumeLevel = parseFloat(this.value);
-                    volumeValue.textContent = Math.round(volumeLevel * 100) + '%';
-                    saveToLocalStorage();
-                });
-                
-                // 9. Reset step indicator
-                resetStepIndicator();
-                
-                // 10. Ẩn loading
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                    showNotification("Ứng dụng đã sẵn sàng! Chế độ đọc từ vựng đã được kích hoạt.");
-                    
-                    // Hiển thị mode indicator
-                    updateModeIndicator();
-                    
-                    // Test TTS ngay để xác nhận hoạt động
-                    setTimeout(() => {
-                        testTTSFunction();
-                    }, 1000);
-                    
-                }, 1500);
-                
-            } catch (error) {
-                console.error("Lỗi khởi tạo:", error);
-                loadingOverlay.style.display = 'none';
-                showNotification("Ứng dụng đã sẵn sàng!", "warning");
-            }
-        }
-        
-        // Khởi tạo TTS
-        function initTTS() {
-            try {
-                ttsAudio = new Audio();
-                ttsAudio.volume = volumeLevel;
-                ttsSupported = true;
-                
-                // Kiểm tra TTS có hoạt động không
-                setTimeout(() => {
-                    loadingStatus.textContent = "TTS đã sẵn sàng cho APK";
-                    enableTTSBtn.style.display = 'block';
-                    useBeepModeBtn.style.display = 'block';
-                    useFallbackBtn.style.display = 'block';
-                }, 500);
-                
-            } catch (error) {
-                console.error("Lỗi khởi tạo TTS:", error);
-                ttsSupported = false;
-                useTTSMode = false;
-                useVisualMode = true;
-            }
-        }
-        
-        // Khởi tạo Audio dự phòng
-        function initAudioFallback() {
+        const vocabCountFull = document.getElementById('vocabCountFull');
+
+        // ========== HÀM ÂM THANH WEB AUDIO API ==========
+        function initAudioContext() {
             try {
                 window.AudioContext = window.AudioContext || window.webkitAudioContext;
                 if (window.AudioContext) {
                     audioContext = new AudioContext();
+                    return true;
                 }
             } catch (error) {
-                console.error("Lỗi khởi tạo audio:", error);
+                console.error("Không thể khởi tạo Audio Context:", error);
             }
+            return false;
         }
-        
-        // ========== HÀM TTS ĐỌC TỪ VỰNG ==========
-        function speakWord(word, lang = 'en-US', isExample = false) {
-            if (!ttsSupported || !useTTSMode) {
-                // Fallback to beep
-                playBeep(800, 0.2);
-                return;
+
+        function playSound(frequency, duration, type = 'sine', volumeLevel = volume) {
+            if (!audioContext) {
+                if (!initAudioContext()) return;
             }
             
             try {
-                // Dừng âm thanh cũ nếu có
-                if (ttsAudio) {
-                    ttsAudio.pause();
-                    ttsAudio.currentTime = 0;
-                }
-                
-                // Sử dụng Web Speech API nếu có
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(word);
-                    utterance.lang = lang;
-                    utterance.volume = volumeLevel;
-                    utterance.rate = 0.9;
-                    
-                    // Hiển thị trạng thái đang đọc
-                    showSpeakingStatus(isExample ? `Đang đọc ví dụ: "${word}"` : `Đang đọc từ: ${word}`);
-                    englishBoxEl.classList.add('speaking');
-                    
-                    utterance.onstart = () => {
-                        // Cập nhật trạng thái
-                        statusText.innerHTML = `<i class="fas fa-volume-up"></i> Đang đọc...`;
-                    };
-                    
-                    utterance.onend = () => {
-                        englishBoxEl.classList.remove('speaking');
-                        hideSpeakingStatus();
-                        
-                        if (isPlaying && !isExample) {
-                            // Tiếp tục chu trình học
-                            setTimeout(() => continueLearningCycle(), 500);
-                        }
-                    };
-                    
-                    utterance.onerror = (e) => {
-                        console.error("Lỗi SpeechSynthesis:", e);
-                        englishBoxEl.classList.remove('speaking');
-                        hideSpeakingStatus();
-                        
-                        // Fallback to Google TTS API
-                        fallbackGoogleTTS(word, lang, isExample);
-                    };
-                    
-                    window.speechSynthesis.speak(utterance);
-                    
-                } else {
-                    // Fallback to Google TTS API
-                    fallbackGoogleTTS(word, lang, isExample);
-                }
-                
-            } catch (error) {
-                console.error("Lỗi TTS:", error);
-                // Fallback to beep
-                playBeep(800, 0.2);
-                hideSpeakingStatus();
-                englishBoxEl.classList.remove('speaking');
-            }
-        }
-        
-        // Google TTS Fallback (hoạt động trên APK)
-        function fallbackGoogleTTS(word, lang = 'en', isExample = false) {
-            try {
-                // Tạo URL Google TTS
-                const encodedWord = encodeURIComponent(word);
-                const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedWord}&tl=${lang}&client=tw-ob`;
-                
-                // Tạo audio mới
-                ttsAudio = new Audio(ttsUrl);
-                ttsAudio.volume = volumeLevel;
-                
-                // Hiển thị trạng thái
-                showSpeakingStatus(isExample ? `Đang đọc ví dụ...` : `Đang đọc từ...`);
-                englishBoxEl.classList.add('speaking');
-                
-                ttsAudio.onplay = () => {
-                    statusText.innerHTML = `<i class="fas fa-volume-up"></i> Đang đọc...`;
-                };
-                
-                ttsAudio.onended = () => {
-                    englishBoxEl.classList.remove('speaking');
-                    hideSpeakingStatus();
-                    
-                    if (isPlaying && !isExample) {
-                        setTimeout(() => continueLearningCycle(), 500);
-                    }
-                };
-                
-                ttsAudio.onerror = (e) => {
-                    console.error("Lỗi Google TTS:", e);
-                    englishBoxEl.classList.remove('speaking');
-                    hideSpeakingStatus();
-                    ttsSupported = false;
-                    useTTSMode = false;
-                    
-                    // Fallback cuối cùng: beep
-                    playBeep(800, 0.2);
-                    showNotification("Không thể đọc, đã chuyển sang âm thanh beep", "warning");
-                    
-                    if (isPlaying && !isExample) {
-                        setTimeout(() => continueLearningCycle(), 1000);
-                    }
-                };
-                
-                // Phát âm thanh
-                ttsAudio.play().catch(e => {
-                    console.error("Lỗi phát âm thanh:", e);
-                    fallbackBeepSound();
-                });
-                
-            } catch (error) {
-                console.error("Lỗi fallback TTS:", error);
-                fallbackBeepSound();
-            }
-        }
-        
-        // Fallback âm thanh beep
-        function fallbackBeepSound() {
-            if (audioContext && useBeepMode) {
-                playBeep(800, 0.2);
-                setTimeout(() => playBeep(1000, 0.2), 300);
-            }
-            hideSpeakingStatus();
-            englishBoxEl.classList.remove('speaking');
-        }
-        
-        // Hiển thị trạng thái đang đọc
-        function showSpeakingStatus(text) {
-            speakingText.textContent = text;
-            speakingStatus.style.display = 'flex';
-        }
-        
-        // Ẩn trạng thái đang đọc
-        function hideSpeakingStatus() {
-            speakingStatus.style.display = 'none';
-        }
-        
-        // Test TTS
-        function testTTSFunction() {
-            const testWord = vocabulary.length > 0 ? vocabulary[0].word : "Hello";
-            speakWord(testWord, 'en-US');
-            showNotification("Đang kiểm tra đọc từ vựng...");
-        }
-        
-        // ========== HÀM ÂM THANH BEEP DỰ PHÒNG ==========
-        function playBeep(frequency = 800, duration = 0.1, type = 'sine') {
-            if (!audioContext || !useBeepMode) return;
-            
-            try {
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-                
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
                 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                oscillator.frequency.value = frequency;
+                oscillator.frequency.value = frequency * pitch;
                 oscillator.type = type;
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(volumeLevel, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
                 
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + duration);
                 
             } catch (error) {
-                console.error("Lỗi phát âm thanh beep:", error);
+                console.error("Lỗi phát âm thanh:", error);
             }
         }
-        
-        // ========== HIỆU ỨNG HÌNH ẢNH ==========
-        function applyVisualEffect(element, type) {
-            if (!useVisualMode) return;
+
+        function speakWord(word) {
+            if (isSpeaking) stopAllSounds();
             
-            const visualEffect = visualEffectSelect.value;
+            isSpeaking = true;
+            englishBoxEl.classList.add('speaking');
+            statusText.innerHTML = '<i class="fas fa-volume-up"></i> Đang phát âm từ...';
             
-            switch(visualEffect) {
-                case 'pulse':
-                    element.classList.add('pulse');
-                    setTimeout(() => element.classList.remove('pulse'), 1000);
-                    break;
+            const letters = word.toLowerCase().split('');
+            let delay = 0;
+            
+            // Hiệu ứng từng chữ cái
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    if (!isSpeaking) return;
                     
-                case 'highlight':
-                    const originalBg = element.style.backgroundColor;
-                    element.style.backgroundColor = '#ffeb3b';
-                    element.style.transition = 'background-color 0.3s';
-                    setTimeout(() => {
-                        element.style.backgroundColor = originalBg;
-                    }, 1000);
-                    break;
+                    highlightCurrentLetter(word, index);
                     
-                case 'flash':
-                    element.style.boxShadow = '0 0 20px #3498db';
-                    setTimeout(() => {
-                        element.style.boxShadow = '';
-                    }, 500);
-                    break;
+                    // Tạo âm thanh cho nguyên âm và phụ âm
+                    if (isVowel(letter)) {
+                        playSound(getVowelFrequency(letter), 0.2, 'sine', volume * 0.8);
+                    } else {
+                        playSound(getConsonantFrequency(letter), 0.15, 'triangle', volume * 0.6);
+                    }
                     
-                case 'slide':
-                    element.style.transform = 'translateX(-10px)';
-                    element.style.transition = 'transform 0.3s';
+                }, delay);
+                delay += 250;
+            });
+            
+            // Âm thanh hoàn chỉnh của từ
+            setTimeout(() => {
+                if (!isSpeaking) return;
+                
+                playCompleteWordSound(word);
+                
+                // Kết thúc
+                setTimeout(() => {
+                    englishBoxEl.classList.remove('speaking');
+                    isSpeaking = false;
+                    if (isPlaying) {
+                        continueLearningCycle();
+                    }
+                }, 500);
+                
+            }, delay + 300);
+        }
+
+        function spellWord(word) {
+            if (isSpeaking) stopAllSounds();
+            
+            isSpeaking = true;
+            englishBoxEl.classList.add('speaking');
+            statusText.innerHTML = '<i class="fas fa-spell-check"></i> Đang đánh vần...';
+            
+            const letters = word.toUpperCase().split('');
+            let delay = 0;
+            
+            letters.forEach((letter, index) => {
+                setTimeout(() => {
+                    if (!isSpeaking) return;
+                    
+                    highlightCurrentLetter(word, index);
+                    
+                    // Âm thanh đánh vần
+                    const baseFreq = 220 + (index * 30);
+                    playSound(baseFreq, 0.3, 'sawtooth', volume * 0.7);
+                    
+                    // Âm thanh phụ
                     setTimeout(() => {
-                        element.style.transform = 'translateX(0)';
-                    }, 300);
-                    break;
+                        playSound(baseFreq + 100, 0.1, 'triangle', volume * 0.3);
+                    }, 150);
+                    
+                }, delay);
+                delay += 600;
+            });
+            
+            setTimeout(() => {
+                englishBoxEl.classList.remove('speaking');
+                isSpeaking = false;
+            }, delay + 300);
+        }
+
+        function playCompleteWordSound(word) {
+            // Chuỗi âm thanh hoàn chỉnh
+            const syllables = Math.min(word.length, 4);
+            const baseFreq = 261.63; // C4
+            
+            for (let i = 0; i < syllables; i++) {
+                setTimeout(() => {
+                    const freq = baseFreq * (i + 1);
+                    const type = i % 2 === 0 ? 'sine' : 'triangle';
+                    playSound(freq, 0.25, type, volume * (1 - (i * 0.2)));
+                }, i * 200);
             }
         }
-        
+
+        function testSound() {
+            if (!audioContext) {
+                if (!initAudioContext()) {
+                    showNotification("Không thể khởi tạo âm thanh!", "error");
+                    return;
+                }
+            }
+            
+            // Chuỗi âm thanh test
+            const testNotes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+            
+            testNotes.forEach((freq, index) => {
+                setTimeout(() => {
+                    playSound(freq, 0.3, index % 2 === 0 ? 'sine' : 'triangle', volume);
+                }, index * 300);
+            });
+            
+            showNotification("Đang kiểm tra âm thanh...");
+        }
+
+        function stopAllSounds() {
+            isSpeaking = false;
+            englishBoxEl.classList.remove('speaking');
+            
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+
+        function isVowel(letter) {
+            return ['a', 'e', 'i', 'o', 'u'].includes(letter);
+        }
+
+        function getVowelFrequency(vowel) {
+            const frequencies = {
+                'a': 440.00,  // A4
+                'e': 523.25,  // C5
+                'i': 659.25,  // E5
+                'o': 783.99,  // G5
+                'u': 1046.50  // C6
+            };
+            return frequencies[vowel] || 440.00;
+        }
+
+        function getConsonantFrequency(consonant) {
+            const baseFreq = 261.63; // C4
+            const charCode = consonant.charCodeAt(0) - 97; // a=0, b=1, ...
+            return baseFreq + (charCode * 10);
+        }
+
+        function highlightCurrentLetter(word, position) {
+            const wordElement = document.getElementById('wordText');
+            const text = wordElement.textContent;
+            
+            let highlighted = '';
+            for (let i = 0; i < text.length; i++) {
+                if (i === position) {
+                    highlighted += `<span style="color: #e74c3c; text-shadow: 0 0 10px #ffeb3b; font-size: 2.2rem;">${text[i]}</span>`;
+                } else {
+                    highlighted += text[i];
+                }
+            }
+            
+            wordElement.innerHTML = highlighted;
+            
+            setTimeout(() => {
+                wordElement.innerHTML = text;
+            }, 300);
+        }
+
         // ========== HÀM HỌC TỪ VỰNG ==========
+        function initVocabularyData() {
+            vocabulary = [
+                { word: "HELLO", phonetic: "/həˈloʊ/", type: "Thán từ", meaning: "Xin chào", example: "Hello, how are you?", additional: "Lời chào thông dụng" },
+                { word: "BOOK", phonetic: "/bʊk/", type: "Danh từ", meaning: "Quyển sách", example: "I read an interesting book.", additional: "Vật để đọc" },
+                { word: "WATER", phonetic: "/ˈwɔːtər/", type: "Danh từ", meaning: "Nước", example: "Drink more water.", additional: "Chất lỏng quan trọng" },
+                { word: "SCHOOL", phonetic: "/skuːl/", type: "Danh từ", meaning: "Trường học", example: "I go to school every day.", additional: "Nơi học tập" },
+                { word: "FRIEND", phonetic: "/frend/", type: "Danh từ", meaning: "Bạn bè", example: "She is my best friend.", additional: "Người bạn" },
+                { word: "FAMILY", phonetic: "/ˈfæməli/", type: "Danh từ", meaning: "Gia đình", example: "My family is very important.", additional: "Người thân" },
+                { word: "COMPUTER", phonetic: "/kəmˈpjuːtər/", type: "Danh từ", meaning: "Máy tính", example: "I use computer for work.", additional: "Thiết bị điện tử" },
+                { word: "MUSIC", phonetic: "/ˈmjuːzɪk/", type: "Danh từ", meaning: "Âm nhạc", example: "I listen to music every day.", additional: "Nghệ thuật âm thanh" },
+                { word: "LEARN", phonetic: "/lɜːrn/", type: "Động từ", meaning: "Học", example: "I want to learn English.", additional: "Tiếp thu kiến thức" },
+                { word: "TEACHER", phonetic: "/ˈtiːtʃər/", type: "Danh từ", meaning: "Giáo viên", example: "The teacher explains clearly.", additional: "Người dạy học" }
+            ];
+            saveToLocalStorage();
+        }
+
         function displayCurrentVocabulary() {
             if (vocabulary.length === 0) {
-                wordTextEl.textContent = "Chưa có từ nào. Hãy thêm từ mới!";
+                wordTextEl.textContent = "Chưa có từ nào";
                 phoneticTextEl.textContent = "";
                 wordTypeEl.textContent = "";
                 exampleSentenceEl.textContent = "";
                 meaningTextEl.textContent = "";
                 additionalInfoEl.textContent = "";
                 currentVocabNum.textContent = "0";
+                totalVocabs.textContent = "0";
+                vocabCountFull.textContent = "0";
                 return;
             }
             
@@ -1805,14 +1288,22 @@
             additionalInfoEl.textContent = currentVocab.additional;
             
             currentVocabNum.textContent = currentIndex + 1;
+            totalVocabs.textContent = vocabulary.length;
+            vocabCountFull.textContent = vocabulary.length;
             updateProgress();
         }
-        
-        // Bắt đầu học
+
         function startLearning() {
             if (vocabulary.length === 0) {
-                showNotification("Chưa có từ nào để học. Hãy thêm từ mới!", "error");
+                showNotification("Chưa có từ nào để học!", "error");
                 return;
+            }
+            
+            if (!audioContext) {
+                if (!initAudioContext()) {
+                    showNotification("Không thể khởi tạo âm thanh!", "error");
+                    return;
+                }
             }
             
             if (isPlaying) return;
@@ -1823,15 +1314,14 @@
             repeatCount = 0;
             currentStep = 0;
             
-            statusText.innerHTML = '<i class="fas fa-robot"></i> Đang học tự động... <span class="auto-mode">TỰ ĐỘNG</span>';
+            statusText.innerHTML = '<i class="fas fa-robot"></i> Đang học tự động...';
             updateRepeatCounter();
             resetStepIndicator();
             
             startLearningCycle();
         }
-        
-        // Chu kỳ học
-        async function startLearningCycle() {
+
+        function startLearningCycle() {
             if (!isPlaying) return;
             
             if (repeatCount >= parseInt(repeatCountSelect.value)) {
@@ -1840,101 +1330,79 @@
             }
             
             if (currentStep === 0) {
-                // Bước 1: Đọc từ tiếng Anh
                 updateStepIndicator(1);
-                statusText.innerHTML = '<i class="fas fa-volume-up"></i> Đang đọc từ tiếng Anh...';
-                
-                // Đọc từ
-                if (autoSpeakEnabled && useTTSMode) {
-                    speakWord(vocabulary[currentIndex].word, 'en-US');
-                } else if (useBeepMode) {
-                    playBeep(800, 0.2);
-                    setTimeout(() => continueLearningCycle(), 1000);
-                } else {
-                    // Hiệu ứng hình ảnh
-                    applyVisualEffect(englishBoxEl, 'english');
-                    setTimeout(() => continueLearningCycle(), parseInt(englishSpeedSelect.value) * 1000);
-                }
+                statusText.innerHTML = '<i class="fas fa-volume-up"></i> Đang phát âm từ...';
+                speakWord(vocabulary[currentIndex].word);
             }
         }
-        
-        // Tiếp tục chu trình học
-        async function continueLearningCycle() {
+
+        function continueLearningCycle() {
             if (!isPlaying) return;
             
-            if (currentStep === 0) {
-                currentStep = 1;
+            currentStep = 1;
+            
+            setTimeout(() => {
+                if (!isPlaying) return;
                 
-                // Đợi
-                await delay(parseInt(englishSpeedSelect.value) * 1000);
+                updateStepIndicator(2);
+                statusText.innerHTML = '<i class="fas fa-language"></i> Đang hiển thị nghĩa...';
                 
-                if (isPlaying) {
-                    // Bước 2: Hiển thị nghĩa tiếng Việt
-                    updateStepIndicator(2);
-                    statusText.innerHTML = '<i class="fas fa-language"></i> Đang hiển thị nghĩa tiếng Việt...';
+                // Hiệu ứng cho box tiếng Việt
+                const vietnameseBox = document.getElementById('vietnameseBox');
+                vietnameseBox.classList.add('pulse');
+                setTimeout(() => vietnameseBox.classList.remove('pulse'), 1000);
+                
+                setTimeout(() => {
+                    if (!isPlaying) return;
                     
-                    // Hiệu ứng hình ảnh
-                    applyVisualEffect(vietnameseBoxEl, 'vietnamese');
+                    repeatCount++;
+                    updateRepeatCounter();
                     
-                    // Đợi
-                    await delay(parseInt(vietnameseSpeedSelect.value) * 1000);
-                    
-                    if (isPlaying) {
-                        // Tăng bộ đếm lặp
-                        repeatCount++;
-                        updateRepeatCounter();
+                    if (repeatCount >= parseInt(repeatCountSelect.value)) {
+                        updateStepIndicator(3);
+                        statusText.innerHTML = '<i class="fas fa-check-circle"></i> Đã hoàn thành từ này!';
                         
-                        if (repeatCount >= parseInt(repeatCountSelect.value)) {
-                            updateStepIndicator(3);
-                            statusText.innerHTML = '<i class="fas fa-check-circle"></i> Đã hoàn thành từ này!';
-                            
-                            // Âm thanh hoàn thành
-                            if (useBeepMode) {
-                                playBeep(1200, 0.3);
-                                setTimeout(() => playBeep(1000, 0.3), 400);
-                            }
-                            
-                            await delay(parseFloat(delayTimeSlider.value) * 1000);
-                            
+                        // Âm thanh hoàn thành
+                        playCompletionSound();
+                        
+                        setTimeout(() => {
                             if (isPlaying) nextVocabulary();
-                        } else {
-                            currentStep = 0;
-                            statusText.innerHTML = '<i class="fas fa-redo"></i> Lặp lại lần ' + (repeatCount + 1) + '...';
-                            
-                            await delay(parseFloat(delayTimeSlider.value) * 1000);
-                            
+                        }, 1500);
+                    } else {
+                        currentStep = 0;
+                        statusText.innerHTML = `<i class="fas fa-redo"></i> Lặp lại lần ${repeatCount + 1}...`;
+                        
+                        setTimeout(() => {
                             if (isPlaying) startLearningCycle();
-                        }
+                        }, 1000);
                     }
-                }
-            }
+                }, parseInt(vietnameseSpeedSelect.value) * 1000);
+                
+            }, parseInt(englishSpeedSelect.value) * 1000);
         }
-        
-        // Dừng học
+
+        function playCompletionSound() {
+            if (!audioContext) return;
+            
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            
+            notes.forEach((freq, index) => {
+                setTimeout(() => {
+                    playSound(freq, 0.2, 'sine', volume * 0.8);
+                }, index * 200);
+            });
+        }
+
         function pauseLearning() {
             isPlaying = false;
             startBtn.disabled = false;
             pauseBtn.disabled = true;
             
-            // Dừng TTS nếu đang đọc
-            if (ttsAudio) {
-                ttsAudio.pause();
-                ttsAudio.currentTime = 0;
-            }
-            
-            // Dừng speech synthesis
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-            
-            hideSpeakingStatus();
-            englishBoxEl.classList.remove('speaking');
-            
+            stopAllSounds();
             resetStepIndicator();
             statusText.innerHTML = '<i class="fas fa-pause-circle"></i> Đã tạm dừng';
         }
-        
-        // Từ tiếp theo
+
         function nextVocabulary() {
             if (vocabulary.length === 0) return;
             
@@ -1944,67 +1412,168 @@
             
             displayCurrentVocabulary();
             updateRepeatCounter();
-            updateVocabularyHistory();
+            updateVocabularyList();
             
             if (isPlaying) {
-                statusText.innerHTML = '<i class="fas fa-robot"></i> Đang học tự động... <span class="auto-mode">TỰ ĐỘNG</span>';
+                statusText.innerHTML = '<i class="fas fa-robot"></i> Đang học tự động...';
                 resetStepIndicator();
-                startLearningCycle();
+                setTimeout(() => startLearningCycle(), 500);
             } else {
-                statusText.innerHTML = '<i class="fas fa-info-circle"></i> Sẵn sàng để học từ tiếp theo';
+                statusText.innerHTML = '<i class="fas fa-info-circle"></i> Sẵn sàng học từ tiếp theo';
                 resetStepIndicator();
             }
         }
-        
-        // Lặp lại
-        async function repeatCurrentVocabulary() {
-            if (vocabulary.length === 0) {
-                showNotification("Chưa có từ nào để lặp lại!", "error");
+
+        // ========== QUẢN LÝ TỪ VỰNG ==========
+        function addNewVocabulary() {
+            const english = newEnglishWord.value.trim();
+            const phonetic = newPhonetic.value.trim();
+            const type = newWordType.value;
+            const meaning = newVietnameseMeaning.value.trim();
+            const example = newExampleSentence.value.trim();
+            const additional = newAdditionalInfo.value.trim();
+            
+            if (!english) {
+                showNotification("Vui lòng nhập từ tiếng Anh!", "error");
                 return;
             }
             
-            if (isPlaying) pauseLearning();
-            
-            repeatCount = 0;
-            currentStep = 0;
-            
-            updateRepeatCounter();
-            statusText.innerHTML = '<i class="fas fa-redo"></i> Đang lặp lại từ này...';
-            resetStepIndicator();
-            
-            // Bước 1: Đọc từ
-            updateStepIndicator(1);
-            if (autoSpeakEnabled && useTTSMode) {
-                speakWord(vocabulary[currentIndex].word, 'en-US');
-            } else if (useBeepMode) {
-                playBeep(800, 0.2);
+            if (!meaning) {
+                showNotification("Vui lòng nhập nghĩa tiếng Việt!", "error");
+                return;
             }
-            applyVisualEffect(englishBoxEl, 'english');
             
-            await delay(parseInt(englishSpeedSelect.value) * 1000);
+            vocabulary.push({
+                word: english.toUpperCase(),
+                phonetic: phonetic || `/${english.toLowerCase()}/`,
+                type: type,
+                meaning: meaning,
+                example: example || `Example: ${english}`,
+                additional: additional || `Thông tin về từ "${english}"`
+            });
             
-            // Bước 2: Hiển thị nghĩa
-            updateStepIndicator(2);
-            applyVisualEffect(vietnameseBoxEl, 'vietnamese');
+            currentIndex = vocabulary.length - 1;
+            displayCurrentVocabulary();
+            updateVocabularyList();
             
-            updateStepIndicator(3);
-            statusText.innerHTML = '<i class="fas fa-check-circle"></i> Đã lặp lại từ này';
+            // Reset form
+            newEnglishWord.value = "";
+            newPhonetic.value = "";
+            newVietnameseMeaning.value = "";
+            newExampleSentence.value = "";
+            newAdditionalInfo.value = "";
             
-            await delay(1500);
+            saveToLocalStorage();
+            showNotification(`Đã thêm từ "${english}" thành công!`);
             
-            resetStepIndicator();
-            statusText.innerHTML = '<i class="fas fa-info-circle"></i> Sẵn sàng';
+            // Nghe thử từ mới
+            setTimeout(() => {
+                speakWord(english.toUpperCase());
+            }, 500);
         }
-        
+
+        function updateVocabularyList() {
+            const container = document.getElementById('vocabularyHistoryFull');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            vocabulary.forEach((vocab, index) => {
+                const item = document.createElement('div');
+                item.className = 'vocabulary-item';
+                if (index === currentIndex) item.classList.add('current');
+                
+                item.innerHTML = `
+                    <div class="vocabulary-content">
+                        <div class="vocabulary-main">
+                            <div class="vocabulary-word">${index + 1}. ${vocab.word}</div>
+                            <div class="vocabulary-phonetic">${vocab.phonetic}</div>
+                            <div class="vocabulary-type">${vocab.type}</div>
+                            <div class="vocabulary-meaning">${vocab.meaning}</div>
+                            <div class="vocabulary-example">"${vocab.example}"</div>
+                        </div>
+                    </div>
+                    <div class="vocabulary-actions">
+                        <button class="speak-item-btn action-btn" data-index="${index}">
+                            <i class="fas fa-volume-up"></i> Nghe
+                        </button>
+                        <button class="play-btn action-btn" data-index="${index}">
+                            <i class="fas fa-play"></i> Chọn
+                        </button>
+                        <button class="delete-btn action-btn" data-index="${index}">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                `;
+                
+                item.querySelector('.speak-item-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    speakWord(vocab.word);
+                });
+                
+                item.querySelector('.play-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectVocabulary(index);
+                });
+                
+                item.querySelector('.delete-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteVocabulary(index);
+                });
+                
+                container.appendChild(item);
+            });
+        }
+
+        function selectVocabulary(index) {
+            if (isPlaying) pauseLearning();
+            currentIndex = index;
+            displayCurrentVocabulary();
+            updateVocabularyList();
+            
+            // Chuyển về tab học
+            document.querySelector('[data-tab="learning-tab"]').click();
+            showNotification(`Đã chọn từ: ${vocabulary[index].word}`);
+        }
+
+        function deleteVocabulary(index) {
+            if (vocabulary.length <= 1) {
+                showNotification("Không thể xóa từ cuối cùng!", "error");
+                return;
+            }
+            
+            if (confirm(`Bạn có chắc muốn xóa từ "${vocabulary[index].word}"?`)) {
+                vocabulary.splice(index, 1);
+                if (currentIndex >= vocabulary.length) currentIndex = vocabulary.length - 1;
+                
+                displayCurrentVocabulary();
+                updateVocabularyList();
+                saveToLocalStorage();
+                showNotification("Đã xóa từ thành công!");
+            }
+        }
+
+        function clearAllVocabulary() {
+            if (vocabulary.length === 0) {
+                showNotification("Danh sách đã trống!", "error");
+                return;
+            }
+            
+            if (confirm("Bạn có chắc muốn xóa TẤT CẢ các từ?")) {
+                vocabulary = [];
+                currentIndex = 0;
+                displayCurrentVocabulary();
+                updateVocabularyList();
+                saveToLocalStorage();
+                showNotification("Đã xóa tất cả từ vựng!");
+            }
+        }
+
         // ========== HÀM TIỆN ÍCH ==========
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-        
         function updateRepeatCounter() {
             repeatCounter.textContent = `Lặp lại: ${repeatCount}/${repeatCountSelect.value}`;
         }
-        
+
         function updateProgress() {
             if (vocabulary.length === 0) {
                 progressFill.style.width = `0%`;
@@ -2016,20 +1585,13 @@
             progressFill.style.width = `${percent}%`;
             progressPercent.textContent = Math.round(percent);
         }
-        
-        function updateVocabCount() {
-            totalVocabs.textContent = vocabulary.length;
-            if (document.getElementById('vocabCountFull')) {
-                document.getElementById('vocabCountFull').textContent = vocabulary.length;
-            }
-        }
-        
+
         function resetStepIndicator() {
             document.querySelectorAll('.step').forEach(step => {
                 step.classList.remove('active', 'completed');
             });
         }
-        
+
         function updateStepIndicator(step) {
             resetStepIndicator();
             
@@ -2044,7 +1606,7 @@
                 document.getElementById('step3').classList.add('active');
             }
         }
-        
+
         function showNotification(message, type = "success") {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notificationText');
@@ -2068,444 +1630,66 @@
                 notification.classList.remove("show");
             }, 3000);
         }
-        
-        function updateModeIndicator() {
-            const ttsIndicator = document.getElementById('ttsModeIndicator');
-            const visualIndicator = document.getElementById('visualModeIndicator');
-            
-            ttsIndicator.style.display = 'none';
-            visualIndicator.style.display = 'none';
-            
-            if (useTTSMode && useVisualMode) {
-                ttsIndicator.style.display = 'flex';
-                visualIndicator.style.display = 'flex';
-            } else if (useTTSMode) {
-                ttsIndicator.style.display = 'flex';
-            } else if (useVisualMode) {
-                visualIndicator.style.display = 'flex';
-            }
-        }
-        
-        // ========== QUẢN LÝ TỪ VỰNG ==========
-        function initVocabularyData() {
-            vocabulary = [
-                {
-                    word: "Vocabulary",
-                    phonetic: "/vəˈkæbjəˌleri/",
-                    type: "Danh từ",
-                    meaning: "Từ vựng, vốn từ",
-                    example: "He has a rich vocabulary in English.",
-                    additional: "Tập hợp các từ mà một người biết hoặc sử dụng."
-                },
-                {
-                    word: "Pronunciation",
-                    phonetic: "/prəˌnʌnsiˈeɪʃən/",
-                    type: "Danh từ",
-                    meaning: "Phát âm",
-                    example: "Her pronunciation is very clear.",
-                    additional: "Cách phát âm một từ hoặc ngôn ngữ."
-                },
-                {
-                    word: "Grammar",
-                    phonetic: "/ˈɡræmər/",
-                    type: "Danh từ",
-                    meaning: "Ngữ pháp",
-                    example: "English grammar can be difficult for beginners.",
-                    additional: "Hệ thống các quy tắc của một ngôn ngữ."
-                },
-                {
-                    word: "Fluency",
-                    phonetic: "/ˈfluːənsi/",
-                    type: "Danh từ",
-                    meaning: "Sự trôi chảy",
-                    example: "He speaks English with great fluency.",
-                    additional: "Khả năng nói hoặc viết một cách dễ dàng và trôi chảy."
-                },
-                {
-                    word: "Comprehension",
-                    phonetic: "/ˌkɑːmprɪˈhenʃən/",
-                    type: "Danh từ",
-                    meaning: "Sự hiểu biết, khả năng hiểu",
-                    example: "Reading comprehension is important for learning.",
-                    additional: "Khả năng hiểu thông tin hoặc ý nghĩa."
-                },
-                {
-                    word: "Communication",
-                    phonetic: "/kəˌmjuːnɪˈkeɪʃən/",
-                    type: "Danh từ",
-                    meaning: "Giao tiếp, truyền thông",
-                    example: "Good communication is key to success.",
-                    additional: "Hoạt động truyền đạt thông tin hoặc ý tưởng."
-                },
-                {
-                    word: "Practice",
-                    phonetic: "/ˈpræktɪs/",
-                    type: "Danh từ/Động từ",
-                    meaning: "Thực hành, luyện tập",
-                    example: "Practice makes perfect.",
-                    additional: "Lặp đi lặp lại một hoạt động để trở nên thành thạo."
-                },
-                {
-                    word: "Improve",
-                    phonetic: "/ɪmˈpruːv/",
-                    type: "Động từ",
-                    meaning: "Cải thiện, nâng cao",
-                    example: "She wants to improve her English skills.",
-                    additional: "Làm cho cái gì đó trở nên tốt hơn."
-                },
-                {
-                    word: "Accent",
-                    phonetic: "/ˈæksent/",
-                    type: "Danh từ",
-                    meaning: "Giọng, trọng âm",
-                    example: "He has a British accent.",
-                    additional: "Cách phát âm đặc trưng của một vùng hoặc quốc gia."
-                },
-                {
-                    word: "Conversation",
-                    phonetic: "/ˌkɑːnvərˈseɪʃən/",
-                    type: "Danh từ",
-                    meaning: "Cuộc trò chuyện, hội thoại",
-                    example: "We had an interesting conversation about travel.",
-                    additional: "Trao đổi lời nói giữa hai hoặc nhiều người."
-                }
-            ];
-        }
-        
-        function showAddVocabForm() {
-            document.getElementById('addVocabForm').style.display = "block";
-            document.getElementById('newEnglishWord').value = "";
-            document.getElementById('newPhonetic').value = "";
-            document.getElementById('newWordType').value = "Danh từ";
-            document.getElementById('newVietnameseMeaning').value = "";
-            document.getElementById('newExampleSentence').value = "";
-            document.getElementById('newAdditionalInfo').value = "";
-            document.getElementById('newEnglishWord').focus();
-        }
-        
-        function hideAddVocabForm() {
-            document.getElementById('addVocabForm').style.display = "none";
-        }
-        
-        function addNewVocabulary() {
-            const english = document.getElementById('newEnglishWord').value.trim();
-            const phonetic = document.getElementById('newPhonetic').value.trim();
-            const type = document.getElementById('newWordType').value;
-            const meaning = document.getElementById('newVietnameseMeaning').value.trim();
-            const example = document.getElementById('newExampleSentence').value.trim();
-            const additional = document.getElementById('newAdditionalInfo').value.trim();
-            
-            if (!english) {
-                showNotification("Vui lòng nhập từ tiếng Anh!", "error");
-                return;
-            }
-            
-            if (!meaning) {
-                showNotification("Vui lòng nhập nghĩa tiếng Việt!", "error");
-                return;
-            }
-            
-            vocabulary.push({
-                word: english,
-                phonetic: phonetic || `/${english.toLowerCase()}/`,
-                type: type,
-                meaning: meaning,
-                example: example || `Example with "${english}"`,
-                additional: additional || `Thông tin về từ "${english}"`
-            });
-            
-            currentIndex = vocabulary.length - 1;
-            displayCurrentVocabulary();
-            updateVocabCount();
-            updateVocabularyHistory();
-            hideAddVocabForm();
-            
-            saveToLocalStorage();
-            showNotification("Đã thêm từ mới thành công!");
-            
-            // Đọc từ mới thêm
-            setTimeout(() => {
-                speakWord(english, 'en-US');
-            }, 500);
-        }
-        
-        function updateVocabularyHistory() {
-            const container = document.getElementById('vocabularyHistoryFull');
-            if (!container) return;
-            
-            container.innerHTML = '';
-            
-            vocabulary.forEach((vocab, index) => {
-                const item = document.createElement('div');
-                item.className = 'vocabulary-item';
-                if (index === currentIndex) item.classList.add('current');
-                
-                item.innerHTML = `
-                    <div class="vocabulary-content">
-                        <div class="vocabulary-main">
-                            <div class="vocabulary-word">${index + 1}. ${vocab.word}</div>
-                            <div class="vocabulary-phonetic">${vocab.phonetic}</div>
-                            <div class="vocabulary-type">${vocab.type}</div>
-                            <div class="vocabulary-meaning">${vocab.meaning}</div>
-                            <div class="vocabulary-example">"${vocab.example}"</div>
-                        </div>
-                    </div>
-                    <div class="vocabulary-actions">
-                        <button class="speak-btn action-btn" data-index="${index}">
-                            <i class="fas fa-volume-up"></i> Đọc
-                        </button>
-                        <button class="play-btn action-btn" data-index="${index}">
-                            <i class="fas fa-play"></i> Xem
-                        </button>
-                        <button class="delete-btn action-btn" data-index="${index}">
-                            <i class="fas fa-trash"></i> Xóa
-                        </button>
-                    </div>
-                `;
-                
-                item.addEventListener('click', (e) => {
-                    if (!e.target.closest('.vocabulary-actions')) {
-                        selectVocabulary(index);
-                    }
-                });
-                
-                item.querySelector('.speak-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    speakWord(vocab.word, 'en-US');
-                });
-                
-                item.querySelector('.play-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    selectVocabulary(index);
-                });
-                
-                item.querySelector('.delete-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteVocabulary(index);
-                });
-                
-                container.appendChild(item);
-            });
-        }
-        
-        function selectVocabulary(index) {
-            if (isPlaying) pauseLearning();
-            currentIndex = index;
-            displayCurrentVocabulary();
-            updateVocabularyHistory();
-            showNotification(`Đã chọn từ: ${vocabulary[index].word}`);
-        }
-        
-        function deleteVocabulary(index) {
-            if (vocabulary.length <= 1) {
-                showNotification("Không thể xóa từ cuối cùng!", "error");
-                return;
-            }
-            
-            if (confirm(`Bạn có chắc muốn xóa từ "${vocabulary[index].word}"?`)) {
-                vocabulary.splice(index, 1);
-                if (currentIndex >= vocabulary.length) currentIndex = vocabulary.length - 1;
-                
-                displayCurrentVocabulary();
-                updateVocabCount();
-                updateVocabularyHistory();
-                saveToLocalStorage();
-                showNotification("Đã xóa từ thành công!");
-            }
-        }
-        
-        function playAllVocabulary() {
-            if (vocabulary.length === 0) {
-                showNotification("Chưa có từ nào để học!", "error");
-                return;
-            }
-            
-            currentIndex = 0;
-            displayCurrentVocabulary();
-            updateVocabularyHistory();
-            startLearning();
-        }
-        
-        function clearAllVocabulary() {
-            if (vocabulary.length === 0) {
-                showNotification("Danh sách đã trống!", "error");
-                return;
-            }
-            
-            if (confirm("Bạn có chắc muốn xóa TẤT CẢ các từ?")) {
-                vocabulary = [];
-                currentIndex = 0;
-                displayCurrentVocabulary();
-                updateVocabCount();
-                updateVocabularyHistory();
-                saveToLocalStorage();
-                showNotification("Đã xóa tất cả từ vựng!");
-            }
-        }
-        
+
         // ========== LƯU TRỮ ==========
         function saveToLocalStorage() {
             try {
                 localStorage.setItem('englishVocabulary', JSON.stringify(vocabulary));
                 localStorage.setItem('englishVocabCurrentIndex', currentIndex.toString());
-                localStorage.setItem('useTTSMode', useTTSMode.toString());
-                localStorage.setItem('useBeepMode', useBeepMode.toString());
-                localStorage.setItem('useVisualMode', useVisualMode.toString());
-                localStorage.setItem('autoSpeakEnabled', autoSpeakEnabled.toString());
-                localStorage.setItem('volumeLevel', volumeLevel.toString());
-                localStorage.setItem('audioMode', audioModeSelect.value);
-                localStorage.setItem('visualEffect', visualEffectSelect.value);
+                localStorage.setItem('volume', volume.toString());
+                localStorage.setItem('pitch', pitch.toString());
             } catch (e) {
                 console.error("Lỗi lưu dữ liệu:", e);
             }
         }
-        
+
         function loadFromLocalStorage() {
             try {
                 const savedVocab = localStorage.getItem('englishVocabulary');
                 const savedIndex = localStorage.getItem('englishVocabCurrentIndex');
-                const savedTTSMode = localStorage.getItem('useTTSMode');
-                const savedBeepMode = localStorage.getItem('useBeepMode');
-                const savedVisualMode = localStorage.getItem('useVisualMode');
-                const savedAutoSpeak = localStorage.getItem('autoSpeakEnabled');
-                const savedVolume = localStorage.getItem('volumeLevel');
-                const savedAudioMode = localStorage.getItem('audioMode');
-                const savedVisualEffect = localStorage.getItem('visualEffect');
+                const savedVolume = localStorage.getItem('volume');
+                const savedPitch = localStorage.getItem('pitch');
                 
                 if (savedVocab) {
                     vocabulary = JSON.parse(savedVocab);
                     if (savedIndex) currentIndex = parseInt(savedIndex);
-                    if (savedTTSMode) useTTSMode = savedTTSMode === 'true';
-                    if (savedBeepMode) useBeepMode = savedBeepMode === 'true';
-                    if (savedVisualMode) useVisualMode = savedVisualMode === 'true';
-                    if (savedAutoSpeak) autoSpeakEnabled = savedAutoSpeak === 'true';
                     if (savedVolume) {
-                        volumeLevel = parseFloat(savedVolume);
-                        volumeSlider.value = volumeLevel;
-                        volumeValue.textContent = Math.round(volumeLevel * 100) + '%';
+                        volume = parseFloat(savedVolume);
+                        volumeSlider.value = volume * 100;
+                        volumeValue.textContent = Math.round(volume * 100) + '%';
                     }
-                    if (savedAudioMode) audioModeSelect.value = savedAudioMode;
-                    if (savedVisualEffect) visualEffectSelect.value = savedVisualEffect;
-                    
-                    updateModeFromSettings();
-                    updateModeIndicator();
-                    updateToggleAutoSpeakButton();
+                    if (savedPitch) {
+                        pitch = parseFloat(savedPitch);
+                        pitchSlider.value = pitch;
+                        updatePitchValue();
+                    }
+                } else {
+                    initVocabularyData();
                 }
             } catch (e) {
                 console.error("Lỗi tải dữ liệu:", e);
+                initVocabularyData();
             }
         }
-        
-        // ========== CÀI ĐẶT MODE ==========
-        function updateModeFromSettings() {
-            const mode = audioModeSelect.value;
-            
-            switch(mode) {
-                case 'tts':
-                    useTTSMode = true;
-                    useBeepMode = false;
-                    useVisualMode = true;
-                    break;
-                case 'both':
-                    useTTSMode = true;
-                    useBeepMode = true;
-                    useVisualMode = true;
-                    break;
-                case 'visual':
-                    useTTSMode = false;
-                    useBeepMode = false;
-                    useVisualMode = true;
-                    break;
-                case 'beep':
-                    useTTSMode = false;
-                    useBeepMode = true;
-                    useVisualMode = true;
-                    break;
-            }
-            
-            updateModeIndicator();
+
+        function updateVolumeValue() {
+            volume = volumeSlider.value / 100;
+            volumeValue.textContent = volumeSlider.value + '%';
             saveToLocalStorage();
         }
-        
-        function updateToggleAutoSpeakButton() {
-            const icon = autoSpeakEnabled ? 'fa-toggle-on' : 'fa-toggle-off';
-            const text = autoSpeakEnabled ? 'Tắt đọc tự động' : 'Bật đọc tự động';
-            
-            toggleAutoSpeakBtn.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
-            
-            if (autoSpeakEnabled) {
-                toggleAutoSpeakBtn.classList.remove('pause-btn');
-                toggleAutoSpeakBtn.classList.add('start-btn');
-            } else {
-                toggleAutoSpeakBtn.classList.remove('start-btn');
-                toggleAutoSpeakBtn.classList.add('pause-btn');
-            }
+
+        function updatePitchValue() {
+            pitch = parseFloat(pitchSlider.value);
+            let pitchText = '';
+            if (pitch < 0.7) pitchText = 'Thấp';
+            else if (pitch < 1.3) pitchText = 'Trung bình';
+            else pitchText = 'Cao';
+            pitchValue.textContent = pitchText;
+            saveToLocalStorage();
         }
-        
-        // ========== EVENT LISTENERS ==========
+
+        // ========== SỰ KIỆN ==========
         function setupEventListeners() {
-            // Các nút chính
-            startBtn.addEventListener('click', startLearning);
-            pauseBtn.addEventListener('click', pauseLearning);
-            nextBtn.addEventListener('click', nextVocabulary);
-            repeatBtn.addEventListener('click', repeatCurrentVocabulary);
-            speakWordBtn.addEventListener('click', () => {
-                if (vocabulary.length > 0) {
-                    speakWord(vocabulary[currentIndex].word, 'en-US');
-                }
-            });
-            speakExampleBtn.addEventListener('click', () => {
-                if (vocabulary.length > 0 && vocabulary[currentIndex].example) {
-                    speakWord(vocabulary[currentIndex].example, 'en-US', true);
-                }
-            });
-            addVocabBtn.addEventListener('click', showAddVocabForm);
-            saveVocabBtn.addEventListener('click', addNewVocabulary);
-            cancelAddBtn.addEventListener('click', hideAddVocabForm);
-            playAllBtn.addEventListener('click', playAllVocabulary);
-            clearAllBtn.addEventListener('click', clearAllVocabulary);
-            testTTSBtn.addEventListener('click', testTTSFunction);
-            
-            // Toggle auto speak
-            toggleAutoSpeakBtn.addEventListener('click', () => {
-                autoSpeakEnabled = !autoSpeakEnabled;
-                updateToggleAutoSpeakButton();
-                saveToLocalStorage();
-                showNotification(autoSpeakEnabled ? "Đã bật đọc tự động" : "Đã tắt đọc tự động");
-            });
-            
-            // Các nút mode
-            useBeepModeBtn.addEventListener('click', () => {
-                useTTSMode = false;
-                useBeepMode = true;
-                useVisualMode = true;
-                loadingOverlay.style.display = 'none';
-                updateModeFromSettings();
-                showNotification("Đã chuyển sang chế độ âm thanh beep", "warning");
-            });
-            
-            useFallbackBtn.addEventListener('click', () => {
-                useTTSMode = false;
-                useBeepMode = false;
-                useVisualMode = true;
-                loadingOverlay.style.display = 'none';
-                updateModeFromSettings();
-                showNotification("Đã chuyển sang chế độ hình ảnh");
-            });
-            
-            enableTTSBtn.addEventListener('click', () => {
-                useTTSMode = true;
-                useBeepMode = false;
-                useVisualMode = true;
-                loadingOverlay.style.display = 'none';
-                updateModeFromSettings();
-                showNotification("Đã bật chế độ đọc từ vựng");
-            });
-            
-            // Cài đặt thay đổi
-            audioModeSelect.addEventListener('change', updateModeFromSettings);
-            visualEffectSelect.addEventListener('change', () => saveToLocalStorage());
-            
             // Tab navigation
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -2517,31 +1701,98 @@
                 });
             });
             
-            // Back buttons
-            document.getElementById('backToLearningBtn').addEventListener('click', () => {
-                document.querySelector('[data-tab="learning-tab"]').click();
-            });
-            
-            document.getElementById('backToLearningBtn2').addEventListener('click', () => {
-                document.querySelector('[data-tab="learning-tab"]').click();
-            });
-            
-            // User interaction để kích hoạt audio
-            document.addEventListener('click', () => {
-                if (!userInteracted) {
-                    userInteracted = true;
-                    if (audioContext && audioContext.state === 'suspended') {
-                        audioContext.resume();
-                    }
+            // Controls
+            startBtn.addEventListener('click', startLearning);
+            pauseBtn.addEventListener('click', pauseLearning);
+            nextBtn.addEventListener('click', nextVocabulary);
+            repeatBtn.addEventListener('click', () => {
+                if (vocabulary.length > 0) {
+                    speakWord(vocabulary[currentIndex].word);
                 }
-            }, { once: true });
+            });
             
-            // Auto save
-            setInterval(saveToLocalStorage, 30000);
-            window.addEventListener('beforeunload', saveToLocalStorage);
+            speakWordBtn.addEventListener('click', () => {
+                if (vocabulary.length > 0) {
+                    if (!audioContext) {
+                        if (!initAudioContext()) {
+                            showNotification("Không thể khởi tạo âm thanh!", "error");
+                            return;
+                        }
+                    }
+                    speakWord(vocabulary[currentIndex].word);
+                }
+            });
+            
+            spellWordBtn.addEventListener('click', () => {
+                if (vocabulary.length > 0) {
+                    if (!audioContext) {
+                        if (!initAudioContext()) {
+                            showNotification("Không thể khởi tạo âm thanh!", "error");
+                            return;
+                        }
+                    }
+                    spellWord(vocabulary[currentIndex].word);
+                }
+            });
+            
+            testSoundBtn.addEventListener('click', testSound);
+            
+            // Settings
+            volumeSlider.addEventListener('input', updateVolumeValue);
+            pitchSlider.addEventListener('input', updatePitchValue);
+            
+            // Add vocab
+            saveVocabBtn.addEventListener('click', addNewVocabulary);
+            testNewWordBtn.addEventListener('click', () => {
+                const word = newEnglishWord.value.trim();
+                if (word) {
+                    if (!audioContext) {
+                        if (!initAudioContext()) {
+                            showNotification("Không thể khởi tạo âm thanh!", "error");
+                            return;
+                        }
+                    }
+                    speakWord(word.toUpperCase());
+                } else {
+                    showNotification("Vui lòng nhập từ tiếng Anh trước!", "warning");
+                }
+            });
+            
+            // List controls
+            playAllBtn.addEventListener('click', () => {
+                if (vocabulary.length > 0) {
+                    currentIndex = 0;
+                    displayCurrentVocabulary();
+                    updateVocabularyList();
+                    document.querySelector('[data-tab="learning-tab"]').click();
+                    startLearning();
+                }
+            });
+            
+            clearAllBtn.addEventListener('click', clearAllVocabulary);
+            
+            // Kích hoạt audio context khi user tương tác
+            document.addEventListener('click', function initAudioOnFirstClick() {
+                if (!audioContext) {
+                    initAudioContext();
+                }
+                document.removeEventListener('click', initAudioOnFirstClick);
+            }, { once: true });
         }
-        
+
         // ========== KHỞI CHẠY ==========
+        function initApp() {
+            loadFromLocalStorage();
+            displayCurrentVocabulary();
+            updateVocabularyList();
+            setupEventListeners();
+            
+            // Hiển thị thông báo
+            setTimeout(() => {
+                showNotification("Ứng dụng đã sẵn sàng! Click vào màn hình để kích hoạt âm thanh.");
+            }, 1000);
+        }
+
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
