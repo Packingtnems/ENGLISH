@@ -21,6 +21,8 @@
             flex-direction: column;
             align-items: center;
             -webkit-tap-highlight-color: transparent;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Thêm này để cuộn mượt trên iOS */
         }
         
         .container {
@@ -722,6 +724,7 @@
             border-radius: 12px;
             max-height: 500px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Thêm này để cuộn mượt trên iOS */
         }
         
         .vocabulary-list-full .vocabulary-item {
@@ -889,6 +892,15 @@
                 padding: 12px 10px;
                 font-size: 0.9rem;
             }
+            
+            .vocabulary-list-full {
+                max-height: 400px;
+            }
+        }
+        
+        /* CSS để chống zoom nhưng vẫn cho phép cuộn */
+        html {
+            touch-action: manipulation;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -1392,25 +1404,55 @@
             setupTabNavigation();
         }
         
-        // Cải thiện trải nghiệm cảm ứng
+        // Cải thiện trải nghiệm cảm ứng (đã sửa lỗi)
         function improveTouchExperience() {
-            // Thêm lớp để ngăn chặn zoom không mong muốn
-            document.addEventListener('touchmove', function(event) {
-                if (event.scale !== 1) {
+            // Sử dụng cách tiếp cận tốt hơn để ngăn zoom nhưng vẫn cho phép cuộn
+            let lastTouchEnd = 0;
+            let scale = 1;
+            
+            // Chỉ ngăn chặn zoom bằng hai ngón tay
+            document.addEventListener('touchstart', function(event) {
+                if (event.touches.length > 1) {
                     event.preventDefault();
                 }
             }, { passive: false });
+            
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // Ngăn chặn zoom bằng double tap
+            document.addEventListener('dblclick', function(event) {
+                event.preventDefault();
+            }, false);
             
             // Cải thiện hiệu ứng khi nhấn vào nút
             const buttons = document.querySelectorAll('button');
             buttons.forEach(button => {
                 button.addEventListener('touchstart', function() {
                     this.style.transform = 'translateY(2px)';
+                    this.style.transition = 'transform 0.1s';
                 });
                 
                 button.addEventListener('touchend', function() {
                     this.style.transform = '';
+                    this.style.transition = 'transform 0.3s';
                 });
+                
+                button.addEventListener('touchcancel', function() {
+                    this.style.transform = '';
+                    this.style.transition = 'transform 0.3s';
+                });
+            });
+            
+            // Thêm touch-action cho các phần tử có thể cuộn
+            const scrollableElements = document.querySelectorAll('.vocabulary-list-full, .container, body');
+            scrollableElements.forEach(el => {
+                el.style.touchAction = 'pan-y';
             });
         }
         
@@ -2086,7 +2128,7 @@
             if (event.target.tagName === 'TEXTAREA' || event.target.tagName === 'INPUT' || event.target.tagName === 'SELECT') return;
             
             switch(event.key) {
-                                case ' ':
+                case ' ':
                 case 'Enter':
                     if (isPlaying) {
                         pauseLearning();
