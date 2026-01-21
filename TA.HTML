@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Học Từ Vựng Tiếng Anh Tự Động với Âm Thanh</title>
+    <title>Học Từ Vựng Tiếng Anh với Google TTS</title>
     <style>
         * {
             box-sizing: border-box;
@@ -236,11 +236,6 @@
         
         .sound-btn {
             background: linear-gradient(90deg, #3498db, #2980b9);
-            color: white;
-        }
-        
-        .stop-btn {
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
             color: white;
         }
         
@@ -715,6 +710,27 @@
             margin-bottom: 15px;
         }
         
+        /* Internet check */
+        .internet-status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .online {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .offline {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
         @media (min-width: 768px) {
             .vocabulary-container {
                 grid-template-columns: 1fr 1fr;
@@ -740,16 +756,21 @@
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-book-open"></i> Học Từ Vựng Tiếng Anh Tự Động</h1>
-            <p class="subtitle">Tự động đọc từ vựng → Hiển thị nghĩa → Lặp lại → Chuyển từ tiếp theo</p>
+            <h1><i class="fas fa-book-open"></i> Học Từ Vựng Tiếng Anh với Google TTS</h1>
+            <p class="subtitle">Giọng nói thật từ Google - Cần kết nối internet</p>
         </header>
         
         <div class="app-description">
-            <p><span class="highlight">HOẠT ĐỘNG OFFLINE:</span> Phát âm từ vựng bằng Web Audio API, không cần internet!</p>
-            <p>Thêm từ mới, tùy chỉnh cài đặt, và học với âm thanh mô phỏng phát âm.</p>
+            <p><span class="highlight">GIỌNG NÓI THẬT SỰ:</span> Sử dụng Google Text-to-Speech API để đọc từ vựng với giọng chuẩn.</p>
+            <p>Đảm bảo thiết bị có kết nối internet và APK được cấp quyền truy cập mạng.</p>
         </div>
         
         <div class="learning-area">
+            <!-- Kiểm tra internet -->
+            <div id="internetStatus" class="internet-status offline">
+                <i class="fas fa-wifi"></i> Đang kiểm tra kết nối internet...
+            </div>
+            
             <!-- Tab điều hướng -->
             <div class="tab-container">
                 <button class="tab-btn active" data-tab="learning-tab">
@@ -824,18 +845,18 @@
                         <button id="speakWordBtn" class="speak-btn">
                             <i class="fas fa-volume-up"></i> Nghe từ này
                         </button>
-                        <button id="spellWordBtn" class="sound-btn">
-                            <i class="fas fa-spell-check"></i> Đánh vần
+                        <button id="speakExampleBtn" class="sound-btn">
+                            <i class="fas fa-microphone"></i> Nghe ví dụ
                         </button>
                     </div>
-                    <button id="testSoundBtn" class="sound-btn">
-                        <i class="fas fa-music"></i> Kiểm tra âm thanh
+                    <button id="testTTSBtn" class="sound-btn">
+                        <i class="fas fa-music"></i> Kiểm tra TTS
                     </button>
                 </div>
                 
                 <div class="status-area">
                     <div id="statusText" class="status-text">
-                        <i class="fas fa-info-circle"></i> Sẵn sàng để bắt đầu học
+                        <i class="fas fa-info-circle"></i> Sẵn sàng - Đảm bảo có internet
                     </div>
                     <div id="repeatCounter" class="repeat-counter">Lặp lại: 0/3</div>
                     <div class="progress-bar">
@@ -904,13 +925,25 @@
                         </div>
                         
                         <div class="setting-item">
-                            <label for="volumeSlider">Âm lượng: <span id="volumeValue" class="range-value">70%</span></label>
-                            <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                            <label for="voiceSpeed">Tốc độ giọng nói:</label>
+                            <select id="voiceSpeed">
+                                <option value="0.5">Chậm</option>
+                                <option value="0.8">Hơi chậm</option>
+                                <option value="1.0" selected>Bình thường</option>
+                                <option value="1.2">Nhanh</option>
+                                <option value="1.5">Rất nhanh</option>
+                            </select>
                         </div>
                         
                         <div class="setting-item">
-                            <label for="pitchSlider">Độ cao giọng: <span id="pitchValue" class="range-value">Trung bình</span></label>
-                            <input type="range" id="pitchSlider" min="0" max="2" step="0.1" value="1">
+                            <label for="voicePitch">Độ cao giọng:</label>
+                            <select id="voicePitch">
+                                <option value="0.5">Rất thấp</option>
+                                <option value="0.8">Thấp</option>
+                                <option value="1.0" selected>Bình thường</option>
+                                <option value="1.2">Cao</option>
+                                <option value="1.5">Rất cao</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -976,7 +1009,7 @@
     </div>
 
     <footer>
-        <p>Ứng dụng Học Từ Vựng Tiếng Anh &copy; 2023 - Hoạt động offline với Web Audio API</p>
+        <p>Ứng dụng Học Từ Vựng Tiếng Anh &copy; 2023 - Sử dụng Google TTS API (cần internet)</p>
     </footer>
 
     <script>
@@ -987,10 +1020,9 @@
         let isPlaying = false;
         let timer = null;
         let currentStep = 0;
-        let audioContext = null;
         let isSpeaking = false;
-        let volume = 0.7;
-        let pitch = 1.0;
+        let currentAudio = null;
+        let isOnline = false;
         
         // ========== DOM ELEMENTS ==========
         const wordTextEl = document.getElementById('wordText');
@@ -1000,6 +1032,7 @@
         const meaningTextEl = document.getElementById('meaningText');
         const additionalInfoEl = document.getElementById('additionalInfo');
         const englishBoxEl = document.getElementById('englishBox');
+        const internetStatus = document.getElementById('internetStatus');
         
         // Controls
         const startBtn = document.getElementById('startBtn');
@@ -1007,17 +1040,15 @@
         const nextBtn = document.getElementById('nextBtn');
         const repeatBtn = document.getElementById('repeatBtn');
         const speakWordBtn = document.getElementById('speakWordBtn');
-        const spellWordBtn = document.getElementById('spellWordBtn');
-        const testSoundBtn = document.getElementById('testSoundBtn');
+        const speakExampleBtn = document.getElementById('speakExampleBtn');
+        const testTTSBtn = document.getElementById('testTTSBtn');
         
         // Settings
         const englishSpeedSelect = document.getElementById('englishSpeed');
         const vietnameseSpeedSelect = document.getElementById('vietnameseSpeed');
         const repeatCountSelect = document.getElementById('repeatCount');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const volumeValue = document.getElementById('volumeValue');
-        const pitchSlider = document.getElementById('pitchSlider');
-        const pitchValue = document.getElementById('pitchValue');
+        const voiceSpeedSelect = document.getElementById('voiceSpeed');
+        const voicePitchSelect = document.getElementById('voicePitch');
         
         // Add vocab
         const newEnglishWord = document.getElementById('newEnglishWord');
@@ -1042,210 +1073,154 @@
         const progressPercent = document.getElementById('progressPercent');
         const vocabCountFull = document.getElementById('vocabCountFull');
 
-        // ========== HÀM ÂM THANH WEB AUDIO API ==========
-        function initAudioContext() {
-            try {
-                window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (window.AudioContext) {
-                    audioContext = new AudioContext();
-                    return true;
-                }
-            } catch (error) {
-                console.error("Không thể khởi tạo Audio Context:", error);
-            }
-            return false;
-        }
-
-        function playSound(frequency, duration, type = 'sine', volumeLevel = volume) {
-            if (!audioContext) {
-                if (!initAudioContext()) return;
+        // ========== GOOGLE TTS API ==========
+        async function speakWithGoogleTTS(text, lang = 'en-US', isExample = false) {
+            if (!isOnline) {
+                showNotification("Không có kết nối internet!", "error");
+                return false;
             }
             
-            try {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = frequency * pitch;
-                oscillator.type = type;
-                
-                gainNode.gain.setValueAtTime(volumeLevel, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + duration);
-                
-            } catch (error) {
-                console.error("Lỗi phát âm thanh:", error);
+            if (isSpeaking && currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
             }
-        }
-
-        function speakWord(word) {
-            if (isSpeaking) stopAllSounds();
             
             isSpeaking = true;
             englishBoxEl.classList.add('speaking');
-            statusText.innerHTML = '<i class="fas fa-volume-up"></i> Đang phát âm từ...';
+            statusText.innerHTML = `<i class="fas fa-volume-up"></i> Đang đọc ${isExample ? 'ví dụ' : 'từ'}...`;
             
-            const letters = word.toLowerCase().split('');
-            let delay = 0;
-            
-            // Hiệu ứng từng chữ cái
-            letters.forEach((letter, index) => {
-                setTimeout(() => {
-                    if (!isSpeaking) return;
-                    
-                    highlightCurrentLetter(word, index);
-                    
-                    // Tạo âm thanh cho nguyên âm và phụ âm
-                    if (isVowel(letter)) {
-                        playSound(getVowelFrequency(letter), 0.2, 'sine', volume * 0.8);
-                    } else {
-                        playSound(getConsonantFrequency(letter), 0.15, 'triangle', volume * 0.6);
-                    }
-                    
-                }, delay);
-                delay += 250;
-            });
-            
-            // Âm thanh hoàn chỉnh của từ
-            setTimeout(() => {
-                if (!isSpeaking) return;
+            try {
+                // Phương pháp 1: Sử dụng Google TTS API trực tiếp
+                const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=gtx&q=${encodeURIComponent(text)}&tl=${lang}&total=1&idx=0&textlen=${text.length}`;
                 
-                playCompleteWordSound(word);
+                currentAudio = new Audio(ttsUrl);
+                currentAudio.volume = 1.0;
                 
-                // Kết thúc
-                setTimeout(() => {
-                    englishBoxEl.classList.remove('speaking');
-                    isSpeaking = false;
-                    if (isPlaying) {
-                        continueLearningCycle();
-                    }
-                }, 500);
+                return new Promise((resolve, reject) => {
+                    currentAudio.onplay = () => {
+                        console.log("Đang phát âm thanh từ Google TTS");
+                    };
+                    
+                    currentAudio.onended = () => {
+                        isSpeaking = false;
+                        englishBoxEl.classList.remove('speaking');
+                        if (isPlaying && !isExample) {
+                            setTimeout(() => continueLearningCycle(), 500);
+                        }
+                        resolve(true);
+                    };
+                    
+                    currentAudio.onerror = (error) => {
+                        console.error("Lỗi Google TTS:", error);
+                        isSpeaking = false;
+                        englishBoxEl.classList.remove('speaking');
+                        
+                        // Fallback: Sử dụng phương pháp thay thế
+                        speakWithFallback(text, lang, isExample).then(resolve).catch(reject);
+                    };
+                    
+                    currentAudio.play().catch(error => {
+                        console.error("Lỗi phát âm thanh:", error);
+                        isSpeaking = false;
+                        englishBoxEl.classList.remove('speaking');
+                        
+                        // Thử phương pháp thay thế
+                        speakWithFallback(text, lang, isExample).then(resolve).catch(reject);
+                    });
+                });
                 
-            }, delay + 300);
-        }
-
-        function spellWord(word) {
-            if (isSpeaking) stopAllSounds();
-            
-            isSpeaking = true;
-            englishBoxEl.classList.add('speaking');
-            statusText.innerHTML = '<i class="fas fa-spell-check"></i> Đang đánh vần...';
-            
-            const letters = word.toUpperCase().split('');
-            let delay = 0;
-            
-            letters.forEach((letter, index) => {
-                setTimeout(() => {
-                    if (!isSpeaking) return;
-                    
-                    highlightCurrentLetter(word, index);
-                    
-                    // Âm thanh đánh vần
-                    const baseFreq = 220 + (index * 30);
-                    playSound(baseFreq, 0.3, 'sawtooth', volume * 0.7);
-                    
-                    // Âm thanh phụ
-                    setTimeout(() => {
-                        playSound(baseFreq + 100, 0.1, 'triangle', volume * 0.3);
-                    }, 150);
-                    
-                }, delay);
-                delay += 600;
-            });
-            
-            setTimeout(() => {
-                englishBoxEl.classList.remove('speaking');
+            } catch (error) {
+                console.error("Lỗi TTS:", error);
                 isSpeaking = false;
-            }, delay + 300);
-        }
-
-        function playCompleteWordSound(word) {
-            // Chuỗi âm thanh hoàn chỉnh
-            const syllables = Math.min(word.length, 4);
-            const baseFreq = 261.63; // C4
-            
-            for (let i = 0; i < syllables; i++) {
-                setTimeout(() => {
-                    const freq = baseFreq * (i + 1);
-                    const type = i % 2 === 0 ? 'sine' : 'triangle';
-                    playSound(freq, 0.25, type, volume * (1 - (i * 0.2)));
-                }, i * 200);
+                englishBoxEl.classList.remove('speaking');
+                return speakWithFallback(text, lang, isExample);
             }
         }
 
-        function testSound() {
-            if (!audioContext) {
-                if (!initAudioContext()) {
-                    showNotification("Không thể khởi tạo âm thanh!", "error");
-                    return;
+        // Phương pháp thay thế nếu Google TTS không hoạt động
+        async function speakWithFallback(text, lang = 'en-US', isExample = false) {
+            try {
+                // Phương pháp 2: Sử dụng Web Speech API nếu trình duyệt hỗ trợ
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang;
+                    utterance.rate = parseFloat(voiceSpeedSelect.value);
+                    utterance.pitch = parseFloat(voicePitchSelect.value);
+                    utterance.volume = 1.0;
+                    
+                    return new Promise((resolve, reject) => {
+                        utterance.onend = () => {
+                            isSpeaking = false;
+                            englishBoxEl.classList.remove('speaking');
+                            if (isPlaying && !isExample) {
+                                setTimeout(() => continueLearningCycle(), 500);
+                            }
+                            resolve(true);
+                        };
+                        
+                        utterance.onerror = (error) => {
+                            console.error("Lỗi Web Speech API:", error);
+                            isSpeaking = false;
+                            englishBoxEl.classList.remove('speaking');
+                            reject(error);
+                        };
+                        
+                        window.speechSynthesis.speak(utterance);
+                    });
+                } else {
+                    throw new Error("Web Speech API không được hỗ trợ");
                 }
+            } catch (error) {
+                console.error("Lỗi fallback TTS:", error);
+                showNotification("Không thể đọc từ. Kiểm tra internet!", "error");
+                return false;
             }
-            
-            // Chuỗi âm thanh test
-            const testNotes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-            
-            testNotes.forEach((freq, index) => {
-                setTimeout(() => {
-                    playSound(freq, 0.3, index % 2 === 0 ? 'sine' : 'triangle', volume);
-                }, index * 300);
-            });
-            
-            showNotification("Đang kiểm tra âm thanh...");
         }
 
         function stopAllSounds() {
             isSpeaking = false;
             englishBoxEl.classList.remove('speaking');
             
-            if (audioContext) {
-                audioContext.close();
-                audioContext = null;
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
             }
         }
 
-        function isVowel(letter) {
-            return ['a', 'e', 'i', 'o', 'u'].includes(letter);
-        }
-
-        function getVowelFrequency(vowel) {
-            const frequencies = {
-                'a': 440.00,  // A4
-                'e': 523.25,  // C5
-                'i': 659.25,  // E5
-                'o': 783.99,  // G5
-                'u': 1046.50  // C6
-            };
-            return frequencies[vowel] || 440.00;
-        }
-
-        function getConsonantFrequency(consonant) {
-            const baseFreq = 261.63; // C4
-            const charCode = consonant.charCodeAt(0) - 97; // a=0, b=1, ...
-            return baseFreq + (charCode * 10);
-        }
-
-        function highlightCurrentLetter(word, position) {
-            const wordElement = document.getElementById('wordText');
-            const text = wordElement.textContent;
+        function testTTS() {
+            if (!isOnline) {
+                showNotification("Không có kết nối internet!", "error");
+                return;
+            }
             
-            let highlighted = '';
-            for (let i = 0; i < text.length; i++) {
-                if (i === position) {
-                    highlighted += `<span style="color: #e74c3c; text-shadow: 0 0 10px #ffeb3b; font-size: 2.2rem;">${text[i]}</span>`;
-                } else {
-                    highlighted += text[i];
+            const testText = "Hello, this is a test of Google Text to Speech";
+            speakWithGoogleTTS(testText, 'en-US').then(success => {
+                if (success) {
+                    showNotification("Kiểm tra TTS thành công!");
                 }
+            });
+        }
+
+        // ========== KIỂM TRA INTERNET ==========
+        function checkInternetConnection() {
+            isOnline = navigator.onLine;
+            
+            if (isOnline) {
+                internetStatus.className = "internet-status online";
+                internetStatus.innerHTML = '<i class="fas fa-wifi"></i> Đã kết nối internet';
+                statusText.innerHTML = '<i class="fas fa-check-circle"></i> Đã kết nối - Sẵn sàng học';
+            } else {
+                internetStatus.className = "internet-status offline";
+                internetStatus.innerHTML = '<i class="fas fa-wifi-slash"></i> Mất kết nối internet';
+                statusText.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Cần internet để nghe phát âm';
             }
             
-            wordElement.innerHTML = highlighted;
-            
-            setTimeout(() => {
-                wordElement.innerHTML = text;
-            }, 300);
+            return isOnline;
         }
 
         // ========== HÀM HỌC TỪ VỰNG ==========
@@ -1299,11 +1274,8 @@
                 return;
             }
             
-            if (!audioContext) {
-                if (!initAudioContext()) {
-                    showNotification("Không thể khởi tạo âm thanh!", "error");
-                    return;
-                }
+            if (!isOnline) {
+                showNotification("Cần kết nối internet để nghe phát âm!", "warning");
             }
             
             if (isPlaying) return;
@@ -1321,7 +1293,7 @@
             startLearningCycle();
         }
 
-        function startLearningCycle() {
+        async function startLearningCycle() {
             if (!isPlaying) return;
             
             if (repeatCount >= parseInt(repeatCountSelect.value)) {
@@ -1332,11 +1304,17 @@
             if (currentStep === 0) {
                 updateStepIndicator(1);
                 statusText.innerHTML = '<i class="fas fa-volume-up"></i> Đang phát âm từ...';
-                speakWord(vocabulary[currentIndex].word);
+                
+                // Đọc từ với Google TTS
+                const success = await speakWithGoogleTTS(vocabulary[currentIndex].word, 'en-US', false);
+                if (!success && isPlaying) {
+                    // Nếu TTS thất bại, chuyển sang bước tiếp theo
+                    setTimeout(() => continueLearningCycle(), 1000);
+                }
             }
         }
 
-        function continueLearningCycle() {
+        async function continueLearningCycle() {
             if (!isPlaying) return;
             
             currentStep = 1;
@@ -1362,9 +1340,7 @@
                         updateStepIndicator(3);
                         statusText.innerHTML = '<i class="fas fa-check-circle"></i> Đã hoàn thành từ này!';
                         
-                        // Âm thanh hoàn thành
-                        playCompletionSound();
-                        
+                        // Chuyển từ tiếp theo sau 1.5 giây
                         setTimeout(() => {
                             if (isPlaying) nextVocabulary();
                         }, 1500);
@@ -1372,6 +1348,7 @@
                         currentStep = 0;
                         statusText.innerHTML = `<i class="fas fa-redo"></i> Lặp lại lần ${repeatCount + 1}...`;
                         
+                        // Lặp lại sau 1 giây
                         setTimeout(() => {
                             if (isPlaying) startLearningCycle();
                         }, 1000);
@@ -1379,18 +1356,6 @@
                 }, parseInt(vietnameseSpeedSelect.value) * 1000);
                 
             }, parseInt(englishSpeedSelect.value) * 1000);
-        }
-
-        function playCompletionSound() {
-            if (!audioContext) return;
-            
-            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-            
-            notes.forEach((freq, index) => {
-                setTimeout(() => {
-                    playSound(freq, 0.2, 'sine', volume * 0.8);
-                }, index * 200);
-            });
         }
 
         function pauseLearning() {
@@ -1465,11 +1430,6 @@
             
             saveToLocalStorage();
             showNotification(`Đã thêm từ "${english}" thành công!`);
-            
-            // Nghe thử từ mới
-            setTimeout(() => {
-                speakWord(english.toUpperCase());
-            }, 500);
         }
 
         function updateVocabularyList() {
@@ -1508,7 +1468,7 @@
                 
                 item.querySelector('.speak-item-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
-                    speakWord(vocab.word);
+                    speakWithGoogleTTS(vocab.word, 'en-US');
                 });
                 
                 item.querySelector('.play-btn').addEventListener('click', (e) => {
@@ -1636,8 +1596,6 @@
             try {
                 localStorage.setItem('englishVocabulary', JSON.stringify(vocabulary));
                 localStorage.setItem('englishVocabCurrentIndex', currentIndex.toString());
-                localStorage.setItem('volume', volume.toString());
-                localStorage.setItem('pitch', pitch.toString());
             } catch (e) {
                 console.error("Lỗi lưu dữ liệu:", e);
             }
@@ -1647,22 +1605,10 @@
             try {
                 const savedVocab = localStorage.getItem('englishVocabulary');
                 const savedIndex = localStorage.getItem('englishVocabCurrentIndex');
-                const savedVolume = localStorage.getItem('volume');
-                const savedPitch = localStorage.getItem('pitch');
                 
                 if (savedVocab) {
                     vocabulary = JSON.parse(savedVocab);
                     if (savedIndex) currentIndex = parseInt(savedIndex);
-                    if (savedVolume) {
-                        volume = parseFloat(savedVolume);
-                        volumeSlider.value = volume * 100;
-                        volumeValue.textContent = Math.round(volume * 100) + '%';
-                    }
-                    if (savedPitch) {
-                        pitch = parseFloat(savedPitch);
-                        pitchSlider.value = pitch;
-                        updatePitchValue();
-                    }
                 } else {
                     initVocabularyData();
                 }
@@ -1672,24 +1618,12 @@
             }
         }
 
-        function updateVolumeValue() {
-            volume = volumeSlider.value / 100;
-            volumeValue.textContent = volumeSlider.value + '%';
-            saveToLocalStorage();
-        }
-
-        function updatePitchValue() {
-            pitch = parseFloat(pitchSlider.value);
-            let pitchText = '';
-            if (pitch < 0.7) pitchText = 'Thấp';
-            else if (pitch < 1.3) pitchText = 'Trung bình';
-            else pitchText = 'Cao';
-            pitchValue.textContent = pitchText;
-            saveToLocalStorage();
-        }
-
         // ========== SỰ KIỆN ==========
         function setupEventListeners() {
+            // Kiểm tra internet khi load và khi thay đổi trạng thái
+            window.addEventListener('online', checkInternetConnection);
+            window.addEventListener('offline', checkInternetConnection);
+            
             // Tab navigation
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -1707,52 +1641,30 @@
             nextBtn.addEventListener('click', nextVocabulary);
             repeatBtn.addEventListener('click', () => {
                 if (vocabulary.length > 0) {
-                    speakWord(vocabulary[currentIndex].word);
+                    speakWithGoogleTTS(vocabulary[currentIndex].word, 'en-US');
                 }
             });
             
             speakWordBtn.addEventListener('click', () => {
                 if (vocabulary.length > 0) {
-                    if (!audioContext) {
-                        if (!initAudioContext()) {
-                            showNotification("Không thể khởi tạo âm thanh!", "error");
-                            return;
-                        }
-                    }
-                    speakWord(vocabulary[currentIndex].word);
+                    speakWithGoogleTTS(vocabulary[currentIndex].word, 'en-US');
                 }
             });
             
-            spellWordBtn.addEventListener('click', () => {
-                if (vocabulary.length > 0) {
-                    if (!audioContext) {
-                        if (!initAudioContext()) {
-                            showNotification("Không thể khởi tạo âm thanh!", "error");
-                            return;
-                        }
-                    }
-                    spellWord(vocabulary[currentIndex].word);
+            speakExampleBtn.addEventListener('click', () => {
+                if (vocabulary.length > 0 && vocabulary[currentIndex].example) {
+                    speakWithGoogleTTS(vocabulary[currentIndex].example, 'en-US', true);
                 }
             });
             
-            testSoundBtn.addEventListener('click', testSound);
-            
-            // Settings
-            volumeSlider.addEventListener('input', updateVolumeValue);
-            pitchSlider.addEventListener('input', updatePitchValue);
+            testTTSBtn.addEventListener('click', testTTS);
             
             // Add vocab
             saveVocabBtn.addEventListener('click', addNewVocabulary);
             testNewWordBtn.addEventListener('click', () => {
                 const word = newEnglishWord.value.trim();
                 if (word) {
-                    if (!audioContext) {
-                        if (!initAudioContext()) {
-                            showNotification("Không thể khởi tạo âm thanh!", "error");
-                            return;
-                        }
-                    }
-                    speakWord(word.toUpperCase());
+                    speakWithGoogleTTS(word, 'en-US');
                 } else {
                     showNotification("Vui lòng nhập từ tiếng Anh trước!", "warning");
                 }
@@ -1770,18 +1682,13 @@
             });
             
             clearAllBtn.addEventListener('click', clearAllVocabulary);
-            
-            // Kích hoạt audio context khi user tương tác
-            document.addEventListener('click', function initAudioOnFirstClick() {
-                if (!audioContext) {
-                    initAudioContext();
-                }
-                document.removeEventListener('click', initAudioOnFirstClick);
-            }, { once: true });
         }
 
         // ========== KHỞI CHẠY ==========
         function initApp() {
+            // Kiểm tra internet ngay khi khởi động
+            checkInternetConnection();
+            
             loadFromLocalStorage();
             displayCurrentVocabulary();
             updateVocabularyList();
@@ -1789,7 +1696,11 @@
             
             // Hiển thị thông báo
             setTimeout(() => {
-                showNotification("Ứng dụng đã sẵn sàng! Click vào màn hình để kích hoạt âm thanh.");
+                if (isOnline) {
+                    showNotification("Ứng dụng đã sẵn sàng! Đã kết nối internet.");
+                } else {
+                    showNotification("Cảnh báo: Không có internet. Không thể nghe phát âm.", "warning");
+                }
             }, 1000);
         }
 
